@@ -2,7 +2,7 @@
 
 Quem fala é o Mateus, em primeira pessoa.
 
-Trocar `[LINK]` pela URL da Vercel. Palpites fecham ter 15/09 às 19h.
+Trocar `https://quiz.mateuscaumo.com.br` pela URL da Vercel. Palpites fecham ter 15/09 às 19h.
 
 ## 1. Disparo principal (segunda 14/09 ou terça de manhã)
 
@@ -20,7 +20,7 @@ Cravou os 5 → *R$ 500 no Pix.*
 
 ⏰ Fecha *terça 19h*, antes de Platense x Fluminense.
 
-👉 Faz teus palpites: [LINK]
+👉 Faz teus palpites: https://quiz.mateuscaumo.com.br
 
 ## 2. Lembrete (terça 15/09, ~15h)
 
@@ -30,7 +30,7 @@ Cravou os 5 → *R$ 500 no Pix.*
 
 Fecha às 19h com a bola rolando em Buenos Aires.
 
-👉 [LINK]
+👉 https://quiz.mateuscaumo.com.br
 
 ## 3. Resposta automática ao receber o bilhete
 
