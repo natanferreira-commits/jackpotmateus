@@ -1,6 +1,6 @@
-# Bolão da Libertadores — 5 palpites da rodada, R$ 500 pra quem cravar
+# Bolão da Libertadores — 8 palpites da rodada, R$ 500 pra quem cravar
 
-Página mobile-first: landing (oferta, jogos da rodada, como funciona, aviso) → 5 palpites, um por jogo das quartas mais um da rodada → bilhete com número → botão fixo que abre o WhatsApp com o bilhete pronto pra registrar.
+Página mobile-first: landing (oferta, jogos da rodada, como funciona, aviso) → 8 palpites, dois por jogo das quartas → bilhete com número → botão fixo que abre o WhatsApp com o bilhete pronto pra registrar.
 
 Não tem resposta certa na hora. O afiliado recebe o bilhete no WhatsApp, confere depois do jogo e paga o prêmio conforme a faixa de acertos.
 

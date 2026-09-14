@@ -481,7 +481,7 @@ function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
             ))}
           </ul>
           <div className="slip-foot">
-            <span>Cravou os 5</span>
+            <span>Cravou os {config.palpites.length}</span>
             <strong>{oferta.valor} no Pix</strong>
           </div>
         </section>

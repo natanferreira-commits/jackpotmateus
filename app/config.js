@@ -20,7 +20,7 @@ export const config = {
   // ---------- Oferta ----------
   oferta: {
     valor: "R$ 500",
-    regra: "no Pix pra quem cravar os 5",
+    regra: "no Pix pra quem cravar os 8",
   },
 
   // ---------- Rodada ----------
@@ -38,7 +38,7 @@ export const config = {
   },
 
   // Faixa que roda no topo (separada por •)
-  marquee: ["Bolão do Caumo", "Libertadores", "R$ 500 no Pix", "Quartas de final", "Grátis", "5 palpites"],
+  marquee: ["Bolão do Caumo", "Libertadores", "R$ 500 no Pix", "Quartas de final", "Grátis", "8 palpites"],
 
   // ---------- Landing ----------
   landing: {
@@ -47,13 +47,13 @@ export const config = {
     label: "Bolão do Caumo • Quartas de final",
     // a palavra entre *asteriscos* vira destaque na cor
     titulo: "*R$ 500* pra quem cravar a rodada",
-    subtitulo: "Um palpite por jogo das quartas, mais um da rodada. Cravou os cinco, o Pix é seu.",
+    subtitulo: "Dois palpites por jogo das quartas: o resultado e um mercado. Cravou os oito, o Pix é seu.",
     ctaLabel: "Fazer meus palpites",
     ctaHint: "Grátis. Resultado depois do último jogo.",
     comoFunciona: [
-      "Responde as 5 perguntas em 1 minuto",
+      "Responde as 8 perguntas em 2 minutos",
       "Registra o bilhete no WhatsApp",
-      "Cravou os 5, recebe R$ 500 no Pix",
+      "Cravou os 8, recebe R$ 500 no Pix",
     ],
   },
 
@@ -61,6 +61,7 @@ export const config = {
   // "jogo" é o índice em rodada.jogos, ou null pra palpite da rodada inteira.
   // "mercado" é o rótulo curto que vai no bilhete e no WhatsApp.
   palpites: [
+    // --- Platense x Fluminense ---
     {
       jogo: 0,
       mercado: "Resultado",
@@ -68,30 +69,49 @@ export const config = {
       opcoes: ["Platense", "Empate", "Fluminense"],
     },
     {
+      jogo: 0,
+      mercado: "Ambas marcam",
+      pergunta: "Os dois times marcam?",
+      opcoes: ["Sim", "Não"],
+    },
+    // --- LDU x Palmeiras ---
+    {
+      jogo: 1,
+      mercado: "Resultado",
+      pergunta: "Quem vence no tempo normal?",
+      opcoes: ["LDU", "Empate", "Palmeiras"],
+    },
+    {
       jogo: 1,
       mercado: "Escanteios",
       pergunta: "Vai ter 10 ou mais escanteios?",
       opcoes: ["Sim, 10 ou mais", "Não, menos de 10"],
     },
+    // --- Corinthians x Estudiantes ---
     {
       jogo: 2,
-      mercado: "Ambas marcam",
-      pergunta: "Os dois times marcam?",
-      opcoes: ["Sim", "Não"],
+      mercado: "Resultado",
+      pergunta: "Quem vence no tempo normal?",
+      opcoes: ["Corinthians", "Empate", "Estudiantes"],
     },
     {
-      jogo: 3,
+      jogo: 2,
       mercado: "Total de gols",
       pergunta: "Quantos gols no jogo?",
       opcoes: ["3 ou mais", "Até 2"],
     },
+    // --- Flamengo x Ind. del Valle ---
     {
-      jogo: null,
-      // escudos mostrados no card quando o palpite é da rodada inteira
-      escudos: ["/escudos/fluminense.png", "/escudos/palmeiras.png", "/escudos/corinthians.png", "/escudos/flamengo.png"],
-      mercado: "Brasileiros na semi",
-      pergunta: "Quantos brasileiros passam pra semifinal?",
-      opcoes: ["2 ou menos", "3", "Os 4"],
+      jogo: 3,
+      mercado: "Resultado",
+      pergunta: "Quem vence no tempo normal?",
+      opcoes: ["Flamengo", "Empate", "Ind. del Valle"],
+    },
+    {
+      jogo: 3,
+      mercado: "Cartão vermelho",
+      pergunta: "Vai ter cartão vermelho?",
+      opcoes: ["Sim", "Não"],
     },
   ],
 
@@ -118,7 +138,7 @@ export const config = {
     titulo: "Aviso importante",
     linhas: [
       "Bolão gratuito, sem depósito. Só concorre quem registrar o bilhete no WhatsApp antes do primeiro jogo.",
-      "Se mais de um bilhete cravar os 5, o prêmio é sorteado entre eles.",
+      "Se mais de um bilhete cravar os 8, o prêmio é sorteado entre eles.",
       "Apostas esportivas envolvem risco financeiro. Nunca aposte mais do que pode perder.",
       "Conteúdo destinado a maiores de 18 anos. Jogue com responsabilidade.",
     ],

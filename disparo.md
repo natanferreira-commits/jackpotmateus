@@ -10,12 +10,12 @@ Trocar `https://quiz.mateuscaumo.com.br` pela URL da Vercel. Palpites fecham ter
 
 Quartas de final, jogos de volta essa semana. Fluminense, Palmeiras, Corinthians e Flamengo em campo.
 
-Montei um bolão rápido: *5 palpites*, um por jogo + um da rodada.
+Montei um bolão rápido: *8 palpites*, dois por jogo das quartas.
 
-Cravou os 5 → *R$ 500 no Pix.*
+Cravou os 8 → *R$ 500 no Pix.*
 
 ✅ Grátis, sem depósito
-✅ Leva 1 minuto
+✅ Leva 2 minutos
 ✅ Bilhete registrado aqui no WhatsApp
 
 ⏰ Fecha *terça 19h*, antes de Platense x Fluminense.
@@ -26,7 +26,7 @@ Cravou os 5 → *R$ 500 no Pix.*
 
 ⏰ *Últimas 4 horas pro bolão da Liberta*
 
-5 palpites, R$ 500 no Pix pra quem cravar tudo. Grátis.
+8 palpites, R$ 500 no Pix pra quem cravar tudo. Grátis.
 
 Fecha às 19h com a bola rolando em Buenos Aires.
 
@@ -36,6 +36,6 @@ Fecha às 19h com a bola rolando em Buenos Aires.
 
 Bilhete registrado ✅
 
-Guarda o número que veio na mensagem. Conferimos tudo depois do Flamengo x Del Valle (quinta 21h30) e avisamos aqui quem cravou os 5.
+Guarda o número que veio na mensagem. Conferimos tudo depois do Flamengo x Del Valle (quinta 21h30) e avisamos aqui quem cravou os 8.
 
 Boa sorte 🍀

@@ -10,13 +10,13 @@ const archivo = Archivo({
 });
 
 export const metadata = {
-  title: "Bolão da Libertadores — R$ 500 pra quem cravar 5 palpites",
+  title: "Bolão da Libertadores — R$ 500 pra quem cravar 8 palpites",
   description:
-    "Um palpite por jogo das quartas de final, mais um da rodada. Cravou os 5, leva R$ 500 no Pix. Grátis.",
+    "Dois palpites por jogo das quartas de final. Cravou os 8, leva R$ 500 no Pix. Grátis.",
   robots: "noindex, nofollow",
   openGraph: {
-    title: "Bolão da Libertadores — R$ 500 pra quem cravar 5 palpites",
-    description: "Crava seus 5 palpites da rodada, registra o bilhete no WhatsApp e concorre a R$ 500.",
+    title: "Bolão da Libertadores — R$ 500 pra quem cravar 8 palpites",
+    description: "Crava seus 8 palpites da rodada, registra o bilhete no WhatsApp e concorre a R$ 500.",
     type: "website",
   },
 };
