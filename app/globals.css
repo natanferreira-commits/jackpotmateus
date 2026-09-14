@@ -176,12 +176,28 @@ h1 .hl {
   z-index: 1;
   left: 0;
   right: 0;
-  top: 11%;
+  top: 7%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
 }
-.hero-top .label {
-  margin: 0;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
+.hero-top-titulo {
+  font-size: clamp(22px, 6.4vw, 30px);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gold);
+  line-height: 1;
+}
+.hero-top-sub {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text);
 }
 /* headline na área preta abaixo dos braços, encostada no CTA fixo */
 .hero-copy {
@@ -728,7 +744,8 @@ h1 .hl {
 }
 
 /* hero: entrada escalonada */
-.hero-top .label { animation: sobe 0.5s 0.15s ease both; }
+.hero-top-titulo { animation: sobe 0.5s 0.15s ease both; }
+.hero-top-sub { animation: sobe 0.5s 0.25s ease both; }
 .hero-copy h1 { animation: sobe 0.6s 0.3s ease both; }
 .sticky-inner { animation: sobe 0.5s 0.5s ease both; }
 

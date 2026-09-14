@@ -249,7 +249,11 @@ function Landing({ onStart }) {
       <section className={`hero-img${landing.heroImage ? " com-imagem" : ""}`} style={heroStyle}>
         <Particulas />
         <div className="hero-top">
-          <span className="label">{landing.label}</span>
+          {landing.label.split("•").map((l, i) => (
+            <span className={i === 0 ? "hero-top-titulo" : "hero-top-sub"} key={i}>
+              {l.trim()}
+            </span>
+          ))}
         </div>
         <div className="wrap hero-copy">
           <h1>
