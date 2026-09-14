@@ -11,7 +11,7 @@ export const config = {
   // Mensagem que chega pré-preenchida no WhatsApp.
   // Variáveis: {jogo} {codigo} {palpites} (lista numerada, uma por linha)
   whatsappMensagem:
-    "Oi! Quero registrar meu bilhete do bolão {jogo} (#{codigo}):\n\n{palpites}\n\nMe confirma aí que tá valendo? 🏆",
+    "Oi! Quero registrar meu bilhete do bolão {jogo} (#{codigo}) pra concorrer aos R$ 500:\n\n{palpites}\n\nMe confirma aí que tá valendo? 🏆",
 
   // Cores do tema (Libertadores: marinho + dourado)
   tema: {
