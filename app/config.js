@@ -15,7 +15,7 @@ export const config = {
   marca: "Mateus Caumo",
 
   // Google Analytics 4 — ID de medição (ex: "G-XXXXXXXXXX"). "" não carrega.
-  gaId: "",
+  gaId: "G-MHV790Y2BV",
 
   // Meta Pixel ID (deixe "" pra não carregar)
   pixelId: "",
