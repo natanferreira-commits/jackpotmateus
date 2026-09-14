@@ -6,21 +6,20 @@ Trocar `https://quiz.mateuscaumo.com.br` pela URL da Vercel. Palpites fecham ter
 
 ## 1. Disparo principal (segunda 14/09 ou terça de manhã)
 
-🏆 *BOLÃO DO CAUMO — R$ 500 NO PIX*
+📢 AVISO - R$500 no PIX
 
 Quartas de final, jogos de volta essa semana. Fluminense, Palmeiras, Corinthians e Flamengo em campo.
 
-Montei um bolão rápido: *8 palpites*, dois por jogo das quartas.
+Montei uma dinâmica rápida: você manda os palpites e monta um bilhete.
+Cravou? → R$ 500 no Pix.
 
-Cravou os 8 → *R$ 500 no Pix.*
+✅ Participar é grátis
+✅ Leva 1 minuto
+✅ Registra o bilhete aqui no WhatsApp
 
-✅ Grátis, sem depósito
-✅ Leva 2 minutos
-✅ Bilhete registrado aqui no WhatsApp
+⏰ Fecha terça 19h, antes de Platense x Fluminense.
 
-⏰ Fecha *terça 19h*, antes de Platense x Fluminense.
-
-👉 Faz teus palpites: https://quiz.mateuscaumo.com.br
+👉 https://quiz.mateuscaumo.com.br
 
 ## 2. Lembrete (terça 15/09, ~15h)
 
