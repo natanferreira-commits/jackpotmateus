@@ -123,10 +123,16 @@ function Marquee() {
   );
 }
 
-function Header({ right }) {
+function Header({ right, onHome }) {
   return (
     <header className="header">
-      <span className="brand">{config.marca}</span>
+      {onHome ? (
+        <button className="brand brand-link" onClick={onHome} aria-label="Voltar ao início">
+          {config.marca}
+        </button>
+      ) : (
+        <span className="brand">{config.marca}</span>
+      )}
       <span className="header-right">{right}</span>
     </header>
   );
@@ -174,8 +180,10 @@ function Landing({ onStart }) {
       <Header right={rodada.nome} />
 
       <section className={`hero-img${landing.heroImage ? " com-imagem" : ""}`} style={heroStyle}>
-        <div className="wrap hero-copy">
+        <div className="hero-top">
           <span className="label">{landing.label}</span>
+        </div>
+        <div className="wrap hero-copy">
           <h1>
             <Highlight text={landing.titulo} />
           </h1>
@@ -217,7 +225,7 @@ function Landing({ onStart }) {
 // ============= PALPITES =============
 const AVANCO_MS = 320;
 
-function Palpites({ onFinish }) {
+function Palpites({ onFinish, onHome }) {
   const { palpites, rodada } = config;
   const [idx, setIdx] = useState(0);
   const [escolhas, setEscolhas] = useState([]);
@@ -252,7 +260,7 @@ function Palpites({ onFinish }) {
 
   return (
     <div className="page">
-      <Header right={`Palpite ${idx + 1} de ${total}`} />
+      <Header right={`Palpite ${idx + 1} de ${total}`} onHome={onHome} />
       <div className="progress">
         <div className="progress-fill" style={{ width: `${((idx + (bloqueado ? 1 : 0)) / total) * 100}%` }} />
       </div>
@@ -316,7 +324,7 @@ function Palpites({ onFinish }) {
 }
 
 // ============= LOADING =============
-function Loading({ onDone }) {
+function Loading({ onDone, onHome }) {
   const [p, setP] = useState(0);
   const { etapas, label, segundos } = config.loading;
   const dur = Math.max(0.3, segundos) * 1000;
@@ -341,7 +349,7 @@ function Loading({ onDone }) {
 
   return (
     <div className="page">
-      <Header right={label} />
+      <Header right={label} onHome={onHome} />
       <main className="wrap centro">
         <span className="label">{label}</span>
         <h2 className="pergunta">{etapa}…</h2>
@@ -354,7 +362,7 @@ function Loading({ onDone }) {
 }
 
 // ============= BILHETE =============
-function Bilhete({ escolhas, codigo, onRefazer }) {
+function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
   const link = montarLinkWhatsApp(escolhas, codigo);
   const { bilhete, rodada, oferta } = config;
 
@@ -368,7 +376,7 @@ function Bilhete({ escolhas, codigo, onRefazer }) {
 
   return (
     <div className="page">
-      <Header right={bilhete.label} />
+      <Header right={bilhete.label} onHome={onHome} />
 
       <main className="wrap">
         <section className="hero compacto">
@@ -436,8 +444,10 @@ export default function Home() {
     setStep(config.loading.segundos > 0 ? "loading" : "bilhete");
   }
 
-  if (step === "palpites") return <Palpites onFinish={finish} />;
-  if (step === "loading") return <Loading onDone={() => setStep("bilhete")} />;
-  if (step === "bilhete") return <Bilhete escolhas={escolhas} codigo={codigo} onRefazer={() => setStep("palpites")} />;
+  const goHome = () => setStep("landing");
+  if (step === "palpites") return <Palpites onFinish={finish} onHome={goHome} />;
+  if (step === "loading") return <Loading onDone={() => setStep("bilhete")} onHome={goHome} />;
+  if (step === "bilhete")
+    return <Bilhete escolhas={escolhas} codigo={codigo} onRefazer={() => setStep("palpites")} onHome={goHome} />;
   return <Landing onStart={() => setStep("palpites")} />;
 }
