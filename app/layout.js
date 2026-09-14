@@ -1,35 +1,28 @@
-import { Barlow_Condensed, Inter } from "next/font/google";
+import { Archivo } from "next/font/google";
 import "./globals.css";
 import { config } from "./config";
 
-const display = Barlow_Condensed({
+const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const body = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-body",
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
 export const metadata = {
-  title: "Bolão da Liberta — crava 5 palpites e leva prêmio",
+  title: "Bolão da Libertadores — R$ 500 pra quem cravar 5 palpites",
   description:
-    "Cinco palpites sobre o jogo, bilhete registrado no WhatsApp e prêmio no apito final.",
+    "Um palpite por jogo das quartas de final, mais um da rodada. Cravou os 5, leva R$ 500 no Pix. Grátis.",
   robots: "noindex, nofollow",
   openGraph: {
-    title: "Bolão da Liberta — crava 5 palpites e leva prêmio",
-    description: "Crava seus 5 palpites, registra o bilhete no WhatsApp e concorre ao prêmio.",
+    title: "Bolão da Libertadores — R$ 500 pra quem cravar 5 palpites",
+    description: "Crava seus 5 palpites da rodada, registra o bilhete no WhatsApp e concorre a R$ 500.",
     type: "website",
   },
 };
 
 export const viewport = {
-  themeColor: config.tema.fundo,
+  themeColor: "#050814",
   width: "device-width",
   initialScale: 1,
 };
@@ -48,16 +41,8 @@ function Pixel({ id }) {
 }
 
 export default function RootLayout({ children }) {
-  const t = config.tema;
-  const style = {
-    "--gold": t.destaque,
-    "--bg": t.fundo,
-    "--bg-top": t.fundoClaro,
-    "--card": t.card,
-    "--border": t.borda,
-  };
   return (
-    <html lang="pt-BR" className={`${display.variable} ${body.variable}`} style={style}>
+    <html lang="pt-BR" className={archivo.variable}>
       <head>
         <Pixel id={config.pixelId} />
       </head>

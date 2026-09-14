@@ -1,6 +1,6 @@
 // ============================================================
 //  CONFIG DO BOLÃO — troque só o que está aqui
-//  Contexto atual: mata-mata da Libertadores
+//  Contexto atual: quartas de final da Libertadores, jogos de volta
 // ============================================================
 
 export const config = {
@@ -9,107 +9,115 @@ export const config = {
   whatsappNumero: "5500000000000",
 
   // Mensagem que chega pré-preenchida no WhatsApp.
-  // Variáveis: {jogo} {codigo} {palpites} (lista numerada, uma por linha)
+  // Variáveis: {rodada} {codigo} {palpites} (lista numerada, uma por linha)
   whatsappMensagem:
-    "Oi! Quero registrar meu bilhete do bolão {jogo} (#{codigo}) pra concorrer aos R$ 500:\n\n{palpites}\n\nMe confirma aí que tá valendo? 🏆",
-
-  // Cores do tema (Libertadores: marinho + dourado)
-  tema: {
-    destaque: "#F5C542",
-    fundo: "#050d24",
-    fundoClaro: "#0b1a3f",
-    card: "rgba(255,255,255,0.05)",
-    borda: "rgba(255,255,255,0.12)",
-  },
+    "Oi! Quero registrar meu bilhete do bolão da Libertadores ({rodada}) pra concorrer aos R$ 500.\nBilhete #{codigo}\n\n{palpites}\n\nMe confirma que tá valendo?",
 
   marca: "Dupla Aposta",
 
   // Meta Pixel ID (deixe "" pra não carregar)
   pixelId: "",
 
-  // ---------- O jogo ----------
-  jogo: {
-    nome: "Fluminense x Platense",
-    competicao: "Libertadores • Mata-mata",
-    // Data/hora do apito inicial (ISO com fuso). "" desliga o contador.
-    // Ex: "2026-09-17T21:30:00-03:00"
-    apito: "",
+  // ---------- Oferta ----------
+  oferta: {
+    valor: "R$ 500",
+    regra: "no Pix pra quem cravar os 5",
   },
+
+  // ---------- Rodada ----------
+  rodada: {
+    nome: "Quartas de final • Volta",
+    // Encerramento dos palpites (ISO com fuso). "" desliga o contador.
+    encerramento: "2026-09-15T19:00:00-03:00",
+    jogos: [
+      { casa: "Platense", fora: "Fluminense", quando: "Ter 15/09 • 19h" },
+      { casa: "LDU", fora: "Palmeiras", quando: "Qua 16/09 • 19h" },
+      { casa: "Corinthians", fora: "Estudiantes", quando: "Qua 16/09 • 21h30" },
+      { casa: "Flamengo", fora: "Ind. del Valle", quando: "Qui 17/09 • 21h30" },
+    ],
+  },
+
+  // Faixa que roda no topo (separada por •)
+  marquee: ["Bolão da Libertadores", "R$ 500 no Pix", "Quartas de final", "Grátis", "5 palpites"],
 
   // ---------- Landing ----------
   landing: {
-    eyebrow: "Bolão da Liberta",
-    // bloco grande de prêmio, acima do título
-    premioHero: {
-      valor: "R$ 500",
-      label: "pra quem cravar os 5 palpites",
-    },
+    label: "Bolão • Quartas de final",
     // a palavra entre *asteriscos* vira destaque na cor
-    titulo: "Acerta *5 de 5* e o Pix é seu.",
+    titulo: "Crava 5 palpites da rodada e leva *R$ 500*",
     subtitulo:
-      "Cinco palpites de aposta sobre o jogo. Você crava, registra o bilhete no WhatsApp e, se acertar tudo, recebe R$ 500.",
-    ctaLabel: "QUERO OS R$ 500",
-    selos: ["Leva 1 minuto", "Grátis"],
-    hint: "{n} palpites • Resultado depois do jogo",
+      "Um palpite por jogo das quartas, mais um da rodada inteira. Acertou os cinco, o Pix é seu.",
+    ctaLabel: "Fazer meus palpites",
+    ctaHint: "Grátis. Resultado depois do último jogo.",
+    comoFunciona: [
+      "Responde as 5 perguntas em 1 minuto",
+      "Registra o bilhete no WhatsApp",
+      "Cravou os 5, recebe R$ 500 no Pix",
+    ],
   },
 
-  // ---------- Premiação (mostrada na landing e no bilhete) ----------
-  premiacao: [
-    { faixa: "5 de 5", premio: "R$ 500 no Pix", destaque: true },
-    { faixa: "4 de 5", premio: "Bônus na casa parceira" },
-    { faixa: "Todo bilhete", premio: "Aposta grátis de participação" },
-  ],
-
   // ---------- Palpites ----------
-  // Cada item vira uma tela. "mercado" é o rótulo curto que vai no bilhete e no WhatsApp.
+  // "jogo" é o índice em rodada.jogos, ou null pra palpite da rodada inteira.
+  // "mercado" é o rótulo curto que vai no bilhete e no WhatsApp.
   palpites: [
     {
-      mercado: "Vencedor",
-      pergunta: "Quem vence o Fluminense x Platense no tempo normal?",
-      opcoes: ["Fluminense", "Empate", "Platense"],
+      jogo: 0,
+      mercado: "Resultado",
+      pergunta: "Quem vence no tempo normal?",
+      opcoes: ["Platense", "Empate", "Fluminense"],
     },
     {
+      jogo: 1,
       mercado: "Escanteios",
-      pergunta: "Vai ter 10 ou mais escanteios no jogo?",
+      pergunta: "Vai ter 10 ou mais escanteios?",
       opcoes: ["Sim, 10 ou mais", "Não, menos de 10"],
     },
     {
+      jogo: 2,
       mercado: "Ambas marcam",
-      pergunta: "Os dois times vão marcar gol?",
-      opcoes: ["Sim, ambas marcam", "Não, pelo menos um zera"],
+      pergunta: "Os dois times marcam?",
+      opcoes: ["Sim", "Não"],
     },
     {
+      jogo: 3,
       mercado: "Total de gols",
-      pergunta: "Quantos gols vai ter no jogo?",
-      opcoes: ["Mais de 2,5 (3 ou mais)", "Menos de 2,5 (até 2)"],
+      pergunta: "Quantos gols no jogo?",
+      opcoes: ["3 ou mais", "Até 2"],
     },
     {
-      mercado: "Cartão vermelho",
-      pergunta: "Vai ter cartão vermelho na partida?",
-      opcoes: ["Sim, alguém vai expulso", "Não, ninguém é expulso"],
+      jogo: null,
+      mercado: "Brasileiros na semi",
+      pergunta: "Quantos brasileiros passam pra semifinal?",
+      opcoes: ["2 ou menos", "3", "Os 4"],
     },
   ],
 
   // ---------- Loading ----------
   loading: {
-    eyebrow: "Fechando seu bilhete",
-    etapas: ["Anotando seus palpites", "Gerando o código do bilhete", "Quase lá"],
+    label: "Fechando seu bilhete",
+    etapas: ["Anotando seus palpites", "Gerando o número do bilhete", "Quase lá"],
     // segundos antes de mostrar o bilhete (0 desliga)
-    segundos: 1.8,
+    segundos: 1.6,
   },
 
   // ---------- Bilhete ----------
   bilhete: {
-    eyebrow: "Seu bilhete",
-    titulo: "Registra no WhatsApp pra concorrer aos *R$ 500*",
-    ctaLabel: "REGISTRAR NO WHATSAPP",
-    hint: "Abre o WhatsApp com seu bilhete pronto • Sem registro, não conta",
+    label: "Seu bilhete",
+    titulo: "Registra no WhatsApp pra valer",
+    subtitulo: "Sem registro o bilhete não conta. É só apertar o botão que a mensagem já vai pronta.",
+    ctaLabel: "Registrar no WhatsApp",
+    ctaHint: "Abre o WhatsApp com o bilhete preenchido",
     refazerLabel: "Refazer palpites",
   },
 
-  // Rodapé / compliance
-  compliance: {
-    idade: "+18",
-    aviso: "Jogue com responsabilidade. Proibido para menores de 18 anos.",
+  // ---------- Aviso / compliance ----------
+  aviso: {
+    titulo: "Aviso importante",
+    linhas: [
+      "Bolão gratuito, sem depósito. Só concorre quem registrar o bilhete no WhatsApp antes do primeiro jogo.",
+      "Se mais de um bilhete cravar os 5, o prêmio é sorteado entre eles.",
+      "Apostas esportivas envolvem risco financeiro. Nunca aposte mais do que pode perder.",
+      "Conteúdo destinado a maiores de 18 anos. Jogue com responsabilidade.",
+    ],
   },
 };
