@@ -1,10 +1,12 @@
-# Mensagens de disparo — Bolão da Libertadores
+# Mensagens de disparo — Bolão do Caumo (Libertadores)
+
+Quem fala é o Mateus, em primeira pessoa.
 
 Trocar `[LINK]` pela URL da Vercel. Palpites fecham ter 15/09 às 19h.
 
 ## 1. Disparo principal (segunda 14/09 ou terça de manhã)
 
-🏆 *BOLÃO DA LIBERTADORES — R$ 500 NO PIX*
+🏆 *BOLÃO DO CAUMO — R$ 500 NO PIX*
 
 Quartas de final, jogos de volta essa semana. Fluminense, Palmeiras, Corinthians e Flamengo em campo.
 

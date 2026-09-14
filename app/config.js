@@ -13,7 +13,7 @@ export const config = {
   whatsappMensagem:
     "Oi! Quero registrar meu bilhete do bolão da Libertadores ({rodada}) pra concorrer aos R$ 500.\nBilhete #{codigo}\n\n{palpites}\n\nMe confirma que tá valendo?",
 
-  marca: "Dupla Aposta",
+  marca: "Mateus Caumo",
 
   // Meta Pixel ID (deixe "" pra não carregar)
   pixelId: "",
@@ -39,13 +39,13 @@ export const config = {
   },
 
   // Faixa que roda no topo (separada por •)
-  marquee: ["Bolão da Libertadores", "R$ 500 no Pix", "Quartas de final", "Grátis", "5 palpites"],
+  marquee: ["Bolão do Caumo", "Libertadores", "R$ 500 no Pix", "Quartas de final", "Grátis", "5 palpites"],
 
   // ---------- Landing ----------
   landing: {
     // Imagem de fundo do hero (1080x1920, em /public). "" usa fundo liso.
     heroImage: "/hero.webp",
-    label: "Bolão • Quartas de final",
+    label: "Bolão do Caumo • Quartas de final",
     // a palavra entre *asteriscos* vira destaque na cor
     titulo: "Crava 5 palpites e leva *R$ 500*",
     subtitulo: "Um palpite por jogo das quartas, mais um da rodada. Cravou os cinco, o Pix é seu.",
