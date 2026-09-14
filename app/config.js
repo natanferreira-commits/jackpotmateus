@@ -39,18 +39,23 @@ export const config = {
   // ---------- Landing ----------
   landing: {
     eyebrow: "Bolão da Liberta",
+    // bloco grande de prêmio, acima do título
+    premioHero: {
+      valor: "R$ 500",
+      label: "pra quem cravar os 5 palpites",
+    },
     // a palavra entre *asteriscos* vira destaque na cor
-    titulo: "Crava *5 palpites* e leva prêmio no apito final.",
+    titulo: "Acerta *5 de 5* e o Pix é seu.",
     subtitulo:
-      "Cinco perguntas de aposta sobre o jogo. Você responde, registra o bilhete no WhatsApp e, se acertar, o prêmio é seu.",
-    ctaLabel: "FAZER MEUS PALPITES",
+      "Cinco palpites de aposta sobre o jogo. Você crava, registra o bilhete no WhatsApp e, se acertar tudo, recebe R$ 500.",
+    ctaLabel: "QUERO OS R$ 500",
     selos: ["Leva 1 minuto", "Grátis"],
     hint: "{n} palpites • Resultado depois do jogo",
   },
 
   // ---------- Premiação (mostrada na landing e no bilhete) ----------
   premiacao: [
-    { faixa: "5 de 5", premio: "Prêmio máximo", destaque: true },
+    { faixa: "5 de 5", premio: "R$ 500 no Pix", destaque: true },
     { faixa: "4 de 5", premio: "Bônus na casa parceira" },
     { faixa: "Todo bilhete", premio: "Aposta grátis de participação" },
   ],
@@ -96,7 +101,7 @@ export const config = {
   // ---------- Bilhete ----------
   bilhete: {
     eyebrow: "Seu bilhete",
-    titulo: "Registra no WhatsApp pra valer",
+    titulo: "Registra no WhatsApp pra concorrer aos *R$ 500*",
     ctaLabel: "REGISTRAR NO WHATSAPP",
     hint: "Abre o WhatsApp com seu bilhete pronto • Sem registro, não conta",
     refazerLabel: "Refazer palpites",

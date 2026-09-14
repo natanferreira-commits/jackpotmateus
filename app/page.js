@@ -167,8 +167,14 @@ function Landing({ onStart }) {
           <span className="dot" />
           {landing.eyebrow}
         </div>
-        <Trophy />
         <JogoChip />
+        {landing.premioHero && (
+          <div className="premio-hero">
+            <Trophy size={72} />
+            <div className="premio-hero-valor">{landing.premioHero.valor}</div>
+            <div className="premio-hero-label">{landing.premioHero.label}</div>
+          </div>
+        )}
         <h1>
           <Highlight text={landing.titulo} />
         </h1>
@@ -365,7 +371,9 @@ function Bilhete({ escolhas, codigo, onRefazer }) {
           </div>
         </div>
 
-        <h1 className="bilhete-titulo">{bilhete.titulo}</h1>
+        <h1 className="bilhete-titulo">
+          <Highlight text={bilhete.titulo} />
+        </h1>
       </div>
 
       <div className="actions">
