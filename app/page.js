@@ -89,12 +89,12 @@ function useCountdown(iso) {
   return { encerrado: diff === 0, d, h, m, s };
 }
 
-function Countdown() {
+function Countdown({ fallback = null }) {
   const c = useCountdown(config.rodada.encerramento);
-  if (!c) return null;
+  if (!c) return fallback;
   const pad = (n) => String(n).padStart(2, "0");
   return (
-    <div className={`countdown${c.encerrado ? " encerrado" : ""}`}>
+    <span className={`countdown${c.encerrado ? " encerrado" : ""}`}>
       <span className="countdown-label">{c.encerrado ? "Palpites encerrados" : "Palpites fecham em"}</span>
       {!c.encerrado && (
         <span className="countdown-num">
@@ -102,7 +102,7 @@ function Countdown() {
           {pad(c.h)}:{pad(c.m)}:{pad(c.s)}
         </span>
       )}
-    </div>
+    </span>
   );
 }
 
@@ -171,17 +171,14 @@ function Landing({ onStart }) {
   return (
     <div className="page">
       <Marquee />
+      <Header right={rodada.nome} />
 
       <section className={`hero-img${landing.heroImage ? " com-imagem" : ""}`} style={heroStyle}>
-        <Header right={rodada.nome} />
         <div className="wrap hero-copy">
           <span className="label">{landing.label}</span>
           <h1>
             <Highlight text={landing.titulo} />
           </h1>
-        </div>
-        <div className="hero-bottom">
-          <Countdown />
         </div>
       </section>
 
@@ -208,7 +205,7 @@ function Landing({ onStart }) {
         <Rodape />
       </main>
 
-      <StickyCta hint={landing.ctaHint}>
+      <StickyCta hint={<Countdown fallback={landing.ctaHint} />}>
         <button className="btn" onClick={onStart}>
           {landing.ctaLabel} <Arrow />
         </button>

@@ -137,13 +137,11 @@ h1 .hl {
 /* ---------- landing: hero com a taça ---------- */
 .hero-img {
   position: relative;
-  min-height: calc(100dvh - 34px); /* 34px = marquee */
-  display: flex;
-  flex-direction: column;
+  min-height: calc(100dvh - 72px); /* 72px = marquee + header */
   background-color: #000;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center 38%;
+  background-position: center center;
 }
 /* funde a base da imagem com o fundo da página */
 .hero-img::after {
@@ -160,29 +158,26 @@ h1 .hl {
   position: relative;
   z-index: 1;
 }
+/* copy sobre a camiseta, entre o queixo (~45%) e os braços (~60%) */
 .hero-copy {
-  position: relative;
+  position: absolute;
   z-index: 1;
-  padding-top: 14px;
+  left: 0;
+  right: 0;
+  top: 45.5%;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+.hero-copy .label {
+  margin-bottom: 6px;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
+}
 .hero-copy h1 {
-  font-size: clamp(28px, 8vw, 40px);
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.9);
-}
-.hero-bottom {
-  position: relative;
-  z-index: 1;
-  margin-top: auto;
-  display: flex;
-  justify-content: center;
-  padding-bottom: calc(var(--sticky-h) + 6px);
-}
-.hero-bottom .countdown {
-  margin-top: 0;
+  font-size: clamp(26px, 7.4vw, 36px);
+  line-height: 1;
+  text-shadow: 0 2px 22px rgba(0, 0, 0, 0.95), 0 0 2px rgba(0, 0, 0, 0.8);
 }
 .hero-copy .lead {
   font-size: 14.5px;
@@ -213,11 +208,7 @@ h1 .hl {
 .countdown {
   display: inline-flex;
   align-items: baseline;
-  gap: 10px;
-  margin-top: 16px;
-  padding: 8px 12px;
-  border: 1px solid var(--line-2);
-  border-radius: 8px;
+  gap: 8px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -225,14 +216,13 @@ h1 .hl {
   color: var(--mut);
 }
 .countdown-num {
-  font-size: 16px;
-  color: var(--text);
+  font-size: 13px;
+  color: var(--gold);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
 }
 .countdown.encerrado {
   color: #ff7a7a;
-  border-color: rgba(255, 122, 122, 0.4);
 }
 
 .oferta {
