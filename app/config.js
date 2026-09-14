@@ -10,8 +10,7 @@ export const config = {
 
   // Mensagem que chega pré-preenchida no WhatsApp.
   // Variáveis: {rodada} {codigo} {palpites} (lista numerada, uma por linha)
-  whatsappMensagem:
-    "Oi! Quero registrar meu bilhete do bolão da Libertadores ({rodada}) pra concorrer aos R$ 500.\nBilhete #{codigo}\n\n{palpites}\n\nMe confirma que tá valendo?",
+  whatsappMensagem: "Quero validar meu palpite",
 
   marca: "Mateus Caumo",
 
