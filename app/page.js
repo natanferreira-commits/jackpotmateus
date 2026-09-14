@@ -37,6 +37,47 @@ function Check() {
   );
 }
 
+// taça estilizada (não é o troféu oficial)
+function Trophy({ size = 120 }) {
+  return (
+    <svg className="trophy" width={size} height={size} viewBox="0 0 120 120" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#FFE58A" />
+          <stop offset="0.5" stopColor="var(--gold)" />
+          <stop offset="1" stopColor="#A8791A" />
+        </linearGradient>
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#8A6412" />
+          <stop offset="0.5" stopColor="#FFE58A" />
+          <stop offset="1" stopColor="#8A6412" />
+        </linearGradient>
+      </defs>
+      {/* alças */}
+      <path d="M30 30c-10 0-16 8-14 18 2 12 12 18 22 18" stroke="url(#g2)" strokeWidth="6" strokeLinecap="round" />
+      <path d="M90 30c10 0 16 8 14 18-2 12-12 18-22 18" stroke="url(#g2)" strokeWidth="6" strokeLinecap="round" />
+      {/* copa */}
+      <path d="M34 20h52v26c0 16-11 30-26 30S34 62 34 46V20z" fill="url(#g1)" />
+      <path d="M34 20h52v6H34z" fill="#FFE58A" opacity="0.9" />
+      {/* haste + base */}
+      <path d="M54 76h12l4 14H50l4-14z" fill="url(#g1)" />
+      <rect x="40" y="90" width="40" height="8" rx="2" fill="url(#g1)" />
+      <rect x="34" y="98" width="52" height="10" rx="3" fill="#A8791A" />
+      {/* brilho */}
+      <path d="M44 28c0 14 4 24 12 30" stroke="#fff" strokeOpacity="0.45" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function Footer() {
+  const { compliance } = config;
+  return (
+    <footer className="footer">
+      <strong>{compliance.idade}</strong> — {compliance.aviso}
+    </footer>
+  );
+}
+
 function track(event, params) {
   try {
     if (typeof window !== "undefined" && window.fbq) {
@@ -53,6 +94,7 @@ function escolherPremio(acertos) {
 function montarLinkWhatsApp(premio, acertos, total) {
   const msg = config.whatsappMensagem
     .replace("{premio}", premio.titulo)
+    .replace("{nivel}", premio.nivel)
     .replace("{acertos}", String(acertos))
     .replace("{total}", String(total));
   return `https://wa.me/${config.whatsappNumero}?text=${encodeURIComponent(msg)}`;
@@ -60,14 +102,16 @@ function montarLinkWhatsApp(premio, acertos, total) {
 
 // ============= LANDING =============
 function Landing({ onStart }) {
-  const { landing, compliance } = config;
+  const { landing } = config;
+  const n = config.perguntas.length;
   return (
-    <div className="screen">
+    <div className="screen landing">
       <div className="content">
         <div className="eyebrow">
           <span className="dot" />
           {landing.eyebrow}
         </div>
+        <Trophy />
         <h1>
           <Highlight text={landing.titulo} />
         </h1>
@@ -86,10 +130,8 @@ function Landing({ onStart }) {
         <button className="cta" onClick={onStart}>
           {landing.ctaLabel}
         </button>
-        <p className="cta-hint">{config.perguntas.length} perguntas • Prêmio no final</p>
-        <footer className="footer">
-          <strong>{compliance.idade}</strong> — {compliance.aviso}
-        </footer>
+        <p className="cta-hint">{landing.hint.replace("{n}", String(n))}</p>
+        <Footer />
       </div>
     </div>
   );
@@ -136,10 +178,12 @@ function Quiz({ onFinish }) {
     <div className="screen quiz">
       <div className="topbar">
         <span className="topbar-label">
-          Pergunta {idx + 1} de {total}
+          <span className="topbar-num">{String(idx + 1).padStart(2, "0")}</span>
+          <span className="topbar-sep">/</span>
+          {String(total).padStart(2, "0")}
         </span>
         <span className="topbar-score">
-          {acertos} {acertos === 1 ? "acerto" : "acertos"}
+          <span className="topbar-score-num">{acertos}</span> {acertos === 1 ? "acerto" : "acertos"}
         </span>
       </div>
       <div className="progress">
@@ -178,12 +222,11 @@ function Quiz({ onFinish }) {
 }
 
 // ============= LOADING =============
-const ETAPAS = ["Conferindo suas respostas", "Calculando sua pontuação", "Liberando seu prêmio"];
-
 function Loading({ onDone }) {
   const [p, setP] = useState(0);
-  const dur = Math.max(0.3, config.resultado.loadingSegundos) * 1000;
-  const etapa = ETAPAS[Math.min(ETAPAS.length - 1, Math.floor((p / 100) * ETAPAS.length))];
+  const { etapas, eyebrow, segundos } = config.loading;
+  const dur = Math.max(0.3, segundos) * 1000;
+  const etapa = etapas[Math.min(etapas.length - 1, Math.floor((p / 100) * etapas.length))];
 
   useEffect(() => {
     const inicio = Date.now();
@@ -207,7 +250,7 @@ function Loading({ onDone }) {
       <div className="content">
         <div className="eyebrow">
           <span className="dot" />
-          PROCESSANDO
+          {eyebrow}
         </div>
         <h2 className="pergunta">{etapa}…</h2>
         <div className="progress big">
@@ -223,7 +266,7 @@ function Resultado({ acertos }) {
   const total = config.perguntas.length;
   const premio = escolherPremio(acertos);
   const link = montarLinkWhatsApp(premio, acertos, total);
-  const { resultado, compliance } = config;
+  const { resultado } = config;
 
   useEffect(() => {
     track("ViewContent", { content_name: "quiz_resultado", value: acertos });
@@ -240,11 +283,11 @@ function Resultado({ acertos }) {
           <span className="placar-num">{acertos}</span>
           <span className="placar-de">/ {total}</span>
         </div>
-        <p className="placar-label">acertos</p>
+        <p className="placar-label">{resultado.placarLabel}</p>
 
         <div className="premio">
           <div className="premio-emoji">{premio.emoji}</div>
-          <div className="premio-nivel">NÍVEL {premio.nivel}</div>
+          <div className="premio-nivel">{premio.nivel}</div>
           <h1 className="premio-titulo">{premio.titulo}</h1>
           <p className="sub">{premio.descricao}</p>
         </div>
@@ -256,9 +299,7 @@ function Resultado({ acertos }) {
           {resultado.ctaLabel}
         </a>
         <p className="cta-hint">{resultado.hint}</p>
-        <footer className="footer">
-          <strong>{compliance.idade}</strong> — {compliance.aviso}
-        </footer>
+        <Footer />
       </div>
     </div>
   );
@@ -275,11 +316,12 @@ export default function Home() {
 
   function finishQuiz(n) {
     setAcertos(n);
-    setStep(config.resultado.loadingSegundos > 0 ? "loading" : "resultado");
+    setStep(config.loading.segundos > 0 ? "loading" : "resultado");
   }
 
   return (
-    <div className="app" style={{ "--lime": config.corDestaque }}>
+    <div className="app">
+      <div className="pitch" aria-hidden="true" />
       {step === "landing" && <Landing onStart={() => setStep("quiz")} />}
       {step === "quiz" && <Quiz onFinish={finishQuiz} />}
       {step === "loading" && <Loading onDone={() => setStep("resultado")} />}

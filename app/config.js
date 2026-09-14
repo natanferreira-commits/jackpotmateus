@@ -1,5 +1,6 @@
 // ============================================================
 //  CONFIG DO QUIZ — troque só o que está aqui
+//  Contexto atual: reta final da Libertadores
 // ============================================================
 
 export const config = {
@@ -8,12 +9,18 @@ export const config = {
   whatsappNumero: "5500000000000",
 
   // Mensagem que chega pré-preenchida no WhatsApp.
-  // Variáveis: {premio} {acertos} {total}
+  // Variáveis: {premio} {acertos} {total} {nivel}
   whatsappMensagem:
-    "Oi! Fiz o quiz de futebol, acertei {acertos} de {total} e desbloqueei: {premio} 🎁 Quero resgatar!",
+    "Oi! Fiz o quiz da Libertadores, acertei {acertos} de {total} e cheguei no nível {nivel}. Quero resgatar: {premio} 🏆",
 
-  // Cor de destaque (Dupla: lime "#C8FF00")
-  corDestaque: "#C8FF00",
+  // Cores do tema (Libertadores: marinho + dourado)
+  tema: {
+    destaque: "#F5C542", // dourado — botão, títulos, placar
+    fundo: "#050d24", // marinho profundo
+    fundoClaro: "#0b1a3f", // marinho do topo / brilho
+    card: "rgba(255,255,255,0.05)",
+    borda: "rgba(255,255,255,0.12)",
+  },
 
   // Marca
   marca: "Dupla Aposta",
@@ -23,45 +30,53 @@ export const config = {
 
   // ---------- Landing ----------
   landing: {
-    eyebrow: "QUIZ DE FUTEBOL",
+    eyebrow: "Libertadores • Reta final",
     // a palavra entre *asteriscos* vira destaque na cor
-    titulo: "Quanto você *entende* de futebol?",
-    subtitulo: "5 perguntas rápidas. Quanto mais acertar, maior o prêmio que você resgata no WhatsApp.",
-    ctaLabel: "COMEÇAR O QUIZ",
+    titulo: "A Liberta chegou no *mata-mata*. Você tá pronto?",
+    subtitulo:
+      "Responde 6 perguntas sobre a Libertadores. Quanto mais acertar, maior o prêmio que você resgata no WhatsApp pra usar na reta final.",
+    ctaLabel: "ENTRAR EM CAMPO",
     selos: ["Leva 1 minuto", "Todo mundo ganha algo"],
+    // texto pequeno abaixo do botão. {n} = número de perguntas
+    hint: "{n} perguntas • Prêmio no apito final",
   },
 
   // ---------- Perguntas ----------
   // "correta" é o índice (0-based) dentro de "opcoes"
   perguntas: [
     {
-      pergunta: "Quantos jogadores cada time tem em campo no início da partida?",
-      opcoes: ["9", "10", "11", "12"],
-      correta: 2,
-    },
-    {
-      pergunta: "Qual seleção tem mais títulos de Copa do Mundo?",
-      opcoes: ["Alemanha", "Brasil", "Itália", "Argentina"],
+      pergunta: "Quem é o maior campeão da história da Libertadores?",
+      opcoes: ["Boca Juniors", "Independiente", "Peñarol", "River Plate"],
       correta: 1,
     },
     {
-      pergunta: "Em quais países acontece a Copa do Mundo de 2026?",
-      opcoes: [
-        "Estados Unidos, México e Canadá",
-        "Espanha e Portugal",
-        "Argentina, Uruguai e Paraguai",
-        "Catar",
-      ],
+      pergunta: "Qual foi o primeiro clube brasileiro a levantar a taça?",
+      opcoes: ["Santos", "Cruzeiro", "Flamengo", "Grêmio"],
       correta: 0,
     },
     {
-      pergunta: "Quanto tempo dura cada tempo de uma partida oficial?",
-      opcoes: ["30 minutos", "40 minutos", "45 minutos", "60 minutos"],
+      pergunta: "Em que ano foi disputada a primeira edição da Libertadores?",
+      opcoes: ["1955", "1960", "1971", "1986"],
+      correta: 1,
+    },
+    {
+      pergunta: "Desde 2019, como a final da Libertadores é decidida?",
+      opcoes: [
+        "Ida e volta",
+        "Jogo único em campo neutro",
+        "Jogo único na casa do melhor campanha",
+        "Melhor de três",
+      ],
+      correta: 1,
+    },
+    {
+      pergunta: "Quem é o maior artilheiro da história da competição?",
+      opcoes: ["Pelé", "Gabigol", "Alberto Spencer", "Fernando Morena"],
       correta: 2,
     },
     {
-      pergunta: "Qual clube brasileiro tem mais títulos da Libertadores?",
-      opcoes: ["Flamengo", "Palmeiras", "Santos", "Grêmio"],
+      pergunta: "Qual clube foi bicampeão seguido em 2020 e 2021?",
+      opcoes: ["Flamengo", "Palmeiras", "River Plate", "Boca Juniors"],
       correta: 1,
     },
   ],
@@ -70,34 +85,41 @@ export const config = {
   // A primeira faixa cujo "minimo" for <= acertos é a escolhida (ordem: maior → menor)
   premios: [
     {
-      minimo: 5,
-      nivel: "CRAQUE",
-      titulo: "Bônus completo de boas-vindas",
-      descricao: "Gabaritou! Você desbloqueou o prêmio máximo.",
+      minimo: 6,
+      nivel: "GLÓRIA ETERNA",
+      titulo: "Bônus máximo pra reta final",
+      descricao: "Gabaritou. Você é da Glória Eterna e desbloqueou o prêmio máximo.",
       emoji: "🏆",
     },
     {
-      minimo: 3,
-      nivel: "TITULAR",
-      titulo: "Bônus de boas-vindas",
-      descricao: "Mandou bem. Tem prêmio te esperando no WhatsApp.",
-      emoji: "⚽",
+      minimo: 4,
+      nivel: "MATA-MATA",
+      titulo: "Bônus pra apostar no mata-mata",
+      descricao: "Passou de fase. Tem prêmio te esperando no WhatsApp.",
+      emoji: "⚔️",
     },
     {
       minimo: 0,
-      nivel: "RESERVA",
+      nivel: "FASE DE GRUPOS",
       titulo: "Aposta grátis de consolação",
-      descricao: "Não foi dessa vez, mas ninguém sai de mãos vazias.",
-      emoji: "🎁",
+      descricao: "Não classificou dessa vez, mas ninguém sai de campo de mãos vazias.",
+      emoji: "🎟️",
     },
   ],
 
+  // ---------- Loading ----------
+  loading: {
+    eyebrow: "VAR em análise",
+    etapas: ["Conferindo suas respostas", "Revisando o lance", "Liberando seu prêmio"],
+    // segundos de "processando" antes de mostrar o prêmio (0 desliga)
+    segundos: 2.4,
+  },
+
   // ---------- Resultado ----------
   resultado: {
+    placarLabel: "acertos",
     ctaLabel: "RESGATAR NO WHATSAPP",
     hint: "Abre o WhatsApp com sua mensagem pronta • Grátis",
-    // segundos de "processando" antes de mostrar o prêmio (0 desliga)
-    loadingSegundos: 2.2,
   },
 
   // Rodapé / compliance

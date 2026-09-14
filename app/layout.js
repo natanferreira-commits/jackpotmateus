@@ -1,20 +1,35 @@
+import { Barlow_Condensed, Inter } from "next/font/google";
 import "./globals.css";
 import { config } from "./config";
 
+const display = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["700", "800", "900"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const body = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+});
+
 export const metadata = {
-  title: "Quiz de Futebol — responda e resgate seu prêmio",
+  title: "Quiz da Libertadores — responda e resgate seu prêmio",
   description:
-    "5 perguntas rápidas de futebol. Quanto mais você acertar, maior o prêmio pra resgatar no WhatsApp.",
+    "6 perguntas sobre a Libertadores. Quanto mais você acertar, maior o prêmio pra resgatar no WhatsApp na reta final.",
   robots: "noindex, nofollow",
   openGraph: {
-    title: "Quiz de Futebol — responda e resgate seu prêmio",
-    description: "Teste o que você sabe de futebol e resgate seu prêmio no WhatsApp.",
+    title: "Quiz da Libertadores — responda e resgate seu prêmio",
+    description: "Prova que você é da Glória Eterna e resgata seu prêmio no WhatsApp.",
     type: "website",
   },
 };
 
 export const viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: config.tema.fundo,
   width: "device-width",
   initialScale: 1,
 };
@@ -33,8 +48,16 @@ function Pixel({ id }) {
 }
 
 export default function RootLayout({ children }) {
+  const t = config.tema;
+  const style = {
+    "--gold": t.destaque,
+    "--bg": t.fundo,
+    "--bg-top": t.fundoClaro,
+    "--card": t.card,
+    "--border": t.borda,
+  };
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={`${display.variable} ${body.variable}`} style={style}>
       <head>
         <Pixel id={config.pixelId} />
       </head>
