@@ -480,3 +480,285 @@ h1 .hl {
   font-size: clamp(30px, 8.5vw, 40px);
   line-height: 1;
 }
+
+/* ======================================================
+   BOLÃO
+   ====================================================== */
+
+/* chip do jogo */
+.jogo-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 18px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+.jogo-nome {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.jogo-comp {
+  font-size: 11.5px;
+  color: var(--text-mut);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* premiação */
+.premiacao {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.premiacao-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 14px;
+}
+.premiacao-row.destaque {
+  border-color: color-mix(in srgb, var(--gold) 55%, transparent);
+  background: color-mix(in srgb, var(--gold) 10%, var(--card));
+}
+.premiacao-faixa {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.premiacao-premio {
+  color: var(--text);
+  font-weight: 600;
+  text-align: right;
+}
+.premiacao.compacta .premiacao-row {
+  padding: 7px 12px;
+}
+
+/* contador */
+.countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  font-size: 12.5px;
+  color: var(--text-mut);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.countdown-num {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+.countdown.encerrado {
+  color: var(--red);
+  border-color: color-mix(in srgb, var(--red) 50%, transparent);
+}
+
+/* tela de palpites */
+.topbar-jogo {
+  font-size: 15px;
+  color: var(--text-mut);
+  letter-spacing: 0.06em;
+}
+.mercado-tag {
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+}
+.screen.quiz .pergunta {
+  text-align: left;
+  align-self: flex-start;
+}
+.opcao.marcada {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 16%, var(--card));
+  transform: scale(1.01);
+}
+.opcao.marcada .opcao-letra,
+.opcao.marcada .opcao-icone {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.link-voltar,
+.link-refazer {
+  background: none;
+  border: none;
+  color: var(--text-mut);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.link-voltar {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+.link-voltar:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.link-refazer {
+  display: block;
+  margin: 6px auto 0;
+}
+
+/* bilhete */
+.bilhete-screen .content {
+  justify-content: flex-start;
+  padding-top: 8px;
+}
+.bilhete {
+  width: 100%;
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  border-radius: var(--radius);
+  padding: 16px 16px 14px;
+  text-align: left;
+  box-shadow:
+    0 14px 50px color-mix(in srgb, var(--gold) 18%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+/* "picotado" lateral de bilhete */
+.bilhete::before,
+.bilhete::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  transform: translateY(-50%);
+}
+.bilhete::before {
+  left: -10px;
+  clip-path: inset(0 0 0 50%);
+}
+.bilhete::after {
+  right: -10px;
+  clip-path: inset(0 50% 0 0);
+}
+.bilhete-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed color-mix(in srgb, var(--gold) 40%, transparent);
+}
+.bilhete-jogo {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.bilhete-comp {
+  font-size: 11.5px;
+  color: var(--text-mut);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.bilhete-codigo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  line-height: 1;
+}
+.bilhete-codigo span {
+  font-size: 11px;
+  color: var(--text-mut);
+  letter-spacing: 0.1em;
+  margin-bottom: 3px;
+}
+.bilhete-lista {
+  list-style: none;
+  padding: 6px 0;
+}
+.bilhete-lista li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14.5px;
+}
+.bilhete-lista li:last-child {
+  border-bottom: none;
+}
+.bilhete-mercado {
+  color: var(--text-mut);
+  white-space: nowrap;
+}
+.bilhete-escolha {
+  font-weight: 700;
+  text-align: right;
+}
+.bilhete-foot {
+  padding-top: 10px;
+  border-top: 1px dashed color-mix(in srgb, var(--gold) 40%, transparent);
+}
+.bilhete-foot .premiacao {
+  max-width: none;
+}
+.bilhete-foot .premiacao-row {
+  padding: 5px 10px;
+  font-size: 12.5px;
+  background: transparent;
+  border-color: transparent;
+}
+.bilhete-foot .premiacao-row.destaque {
+  border-color: color-mix(in srgb, var(--gold) 40%, transparent);
+}
+.bilhete-foot .premiacao-faixa {
+  font-size: 15px;
+}
+.bilhete-titulo {
+  font-size: clamp(28px, 8vw, 36px);
+  margin-top: 4px;
+}

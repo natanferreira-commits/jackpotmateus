@@ -1,125 +1,105 @@
 // ============================================================
-//  CONFIG DO QUIZ — troque só o que está aqui
-//  Contexto atual: reta final da Libertadores
+//  CONFIG DO BOLÃO — troque só o que está aqui
+//  Contexto atual: mata-mata da Libertadores
 // ============================================================
 
 export const config = {
-  // >>> WhatsApp que recebe o resgate (só dígitos, com DDI+DDD) <<<
+  // >>> WhatsApp que recebe o bilhete (só dígitos, com DDI+DDD) <<<
   // Ex: "5511999999999"
   whatsappNumero: "5500000000000",
 
   // Mensagem que chega pré-preenchida no WhatsApp.
-  // Variáveis: {premio} {acertos} {total} {nivel}
+  // Variáveis: {jogo} {codigo} {palpites} (lista numerada, uma por linha)
   whatsappMensagem:
-    "Oi! Fiz o quiz da Libertadores, acertei {acertos} de {total} e cheguei no nível {nivel}. Quero resgatar: {premio} 🏆",
+    "Oi! Quero registrar meu bilhete do bolão {jogo} (#{codigo}):\n\n{palpites}\n\nMe confirma aí que tá valendo? 🏆",
 
   // Cores do tema (Libertadores: marinho + dourado)
   tema: {
-    destaque: "#F5C542", // dourado — botão, títulos, placar
-    fundo: "#050d24", // marinho profundo
-    fundoClaro: "#0b1a3f", // marinho do topo / brilho
+    destaque: "#F5C542",
+    fundo: "#050d24",
+    fundoClaro: "#0b1a3f",
     card: "rgba(255,255,255,0.05)",
     borda: "rgba(255,255,255,0.12)",
   },
 
-  // Marca
   marca: "Dupla Aposta",
 
   // Meta Pixel ID (deixe "" pra não carregar)
   pixelId: "",
 
-  // ---------- Landing ----------
-  landing: {
-    eyebrow: "Libertadores • Reta final",
-    // a palavra entre *asteriscos* vira destaque na cor
-    titulo: "A Liberta chegou no *mata-mata*. Você tá pronto?",
-    subtitulo:
-      "Responde 6 perguntas sobre a Libertadores. Quanto mais acertar, maior o prêmio que você resgata no WhatsApp pra usar na reta final.",
-    ctaLabel: "ENTRAR EM CAMPO",
-    selos: ["Leva 1 minuto", "Todo mundo ganha algo"],
-    // texto pequeno abaixo do botão. {n} = número de perguntas
-    hint: "{n} perguntas • Prêmio no apito final",
+  // ---------- O jogo ----------
+  jogo: {
+    nome: "Fluminense x Platense",
+    competicao: "Libertadores • Mata-mata",
+    // Data/hora do apito inicial (ISO com fuso). "" desliga o contador.
+    // Ex: "2026-09-17T21:30:00-03:00"
+    apito: "",
   },
 
-  // ---------- Perguntas ----------
-  // "correta" é o índice (0-based) dentro de "opcoes"
-  perguntas: [
-    {
-      pergunta: "Quem é o maior campeão da história da Libertadores?",
-      opcoes: ["Boca Juniors", "Independiente", "Peñarol", "River Plate"],
-      correta: 1,
-    },
-    {
-      pergunta: "Qual foi o primeiro clube brasileiro a levantar a taça?",
-      opcoes: ["Santos", "Cruzeiro", "Flamengo", "Grêmio"],
-      correta: 0,
-    },
-    {
-      pergunta: "Em que ano foi disputada a primeira edição da Libertadores?",
-      opcoes: ["1955", "1960", "1971", "1986"],
-      correta: 1,
-    },
-    {
-      pergunta: "Desde 2019, como a final da Libertadores é decidida?",
-      opcoes: [
-        "Ida e volta",
-        "Jogo único em campo neutro",
-        "Jogo único na casa do melhor campanha",
-        "Melhor de três",
-      ],
-      correta: 1,
-    },
-    {
-      pergunta: "Quem é o maior artilheiro da história da competição?",
-      opcoes: ["Pelé", "Gabigol", "Alberto Spencer", "Fernando Morena"],
-      correta: 2,
-    },
-    {
-      pergunta: "Qual clube foi bicampeão seguido em 2020 e 2021?",
-      opcoes: ["Flamengo", "Palmeiras", "River Plate", "Boca Juniors"],
-      correta: 1,
-    },
+  // ---------- Landing ----------
+  landing: {
+    eyebrow: "Bolão da Liberta",
+    // a palavra entre *asteriscos* vira destaque na cor
+    titulo: "Crava *5 palpites* e leva prêmio no apito final.",
+    subtitulo:
+      "Cinco perguntas de aposta sobre o jogo. Você responde, registra o bilhete no WhatsApp e, se acertar, o prêmio é seu.",
+    ctaLabel: "FAZER MEUS PALPITES",
+    selos: ["Leva 1 minuto", "Grátis"],
+    hint: "{n} palpites • Resultado depois do jogo",
+  },
+
+  // ---------- Premiação (mostrada na landing e no bilhete) ----------
+  premiacao: [
+    { faixa: "5 de 5", premio: "Prêmio máximo", destaque: true },
+    { faixa: "4 de 5", premio: "Bônus na casa parceira" },
+    { faixa: "Todo bilhete", premio: "Aposta grátis de participação" },
   ],
 
-  // ---------- Prêmios por faixa de acerto ----------
-  // A primeira faixa cujo "minimo" for <= acertos é a escolhida (ordem: maior → menor)
-  premios: [
+  // ---------- Palpites ----------
+  // Cada item vira uma tela. "mercado" é o rótulo curto que vai no bilhete e no WhatsApp.
+  palpites: [
     {
-      minimo: 6,
-      nivel: "GLÓRIA ETERNA",
-      titulo: "Bônus máximo pra reta final",
-      descricao: "Gabaritou. Você é da Glória Eterna e desbloqueou o prêmio máximo.",
-      emoji: "🏆",
+      mercado: "Vencedor",
+      pergunta: "Quem vence o Fluminense x Platense no tempo normal?",
+      opcoes: ["Fluminense", "Empate", "Platense"],
     },
     {
-      minimo: 4,
-      nivel: "MATA-MATA",
-      titulo: "Bônus pra apostar no mata-mata",
-      descricao: "Passou de fase. Tem prêmio te esperando no WhatsApp.",
-      emoji: "⚔️",
+      mercado: "Escanteios",
+      pergunta: "Vai ter 10 ou mais escanteios no jogo?",
+      opcoes: ["Sim, 10 ou mais", "Não, menos de 10"],
     },
     {
-      minimo: 0,
-      nivel: "FASE DE GRUPOS",
-      titulo: "Aposta grátis de consolação",
-      descricao: "Não classificou dessa vez, mas ninguém sai de campo de mãos vazias.",
-      emoji: "🎟️",
+      mercado: "Ambas marcam",
+      pergunta: "Os dois times vão marcar gol?",
+      opcoes: ["Sim, ambas marcam", "Não, pelo menos um zera"],
+    },
+    {
+      mercado: "Total de gols",
+      pergunta: "Quantos gols vai ter no jogo?",
+      opcoes: ["Mais de 2,5 (3 ou mais)", "Menos de 2,5 (até 2)"],
+    },
+    {
+      mercado: "Cartão vermelho",
+      pergunta: "Vai ter cartão vermelho na partida?",
+      opcoes: ["Sim, alguém vai expulso", "Não, ninguém é expulso"],
     },
   ],
 
   // ---------- Loading ----------
   loading: {
-    eyebrow: "VAR em análise",
-    etapas: ["Conferindo suas respostas", "Revisando o lance", "Liberando seu prêmio"],
-    // segundos de "processando" antes de mostrar o prêmio (0 desliga)
-    segundos: 2.4,
+    eyebrow: "Fechando seu bilhete",
+    etapas: ["Anotando seus palpites", "Gerando o código do bilhete", "Quase lá"],
+    // segundos antes de mostrar o bilhete (0 desliga)
+    segundos: 1.8,
   },
 
-  // ---------- Resultado ----------
-  resultado: {
-    placarLabel: "acertos",
-    ctaLabel: "RESGATAR NO WHATSAPP",
-    hint: "Abre o WhatsApp com sua mensagem pronta • Grátis",
+  // ---------- Bilhete ----------
+  bilhete: {
+    eyebrow: "Seu bilhete",
+    titulo: "Registra no WhatsApp pra valer",
+    ctaLabel: "REGISTRAR NO WHATSAPP",
+    hint: "Abre o WhatsApp com seu bilhete pronto • Sem registro, não conta",
+    refazerLabel: "Refazer palpites",
   },
 
   // Rodapé / compliance

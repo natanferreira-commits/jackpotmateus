@@ -17,13 +17,13 @@ const body = Inter({
 });
 
 export const metadata = {
-  title: "Quiz da Libertadores — responda e resgate seu prêmio",
+  title: "Bolão da Liberta — crava 5 palpites e leva prêmio",
   description:
-    "6 perguntas sobre a Libertadores. Quanto mais você acertar, maior o prêmio pra resgatar no WhatsApp na reta final.",
+    "Cinco palpites sobre o jogo, bilhete registrado no WhatsApp e prêmio no apito final.",
   robots: "noindex, nofollow",
   openGraph: {
-    title: "Quiz da Libertadores — responda e resgate seu prêmio",
-    description: "Prova que você é da Glória Eterna e resgata seu prêmio no WhatsApp.",
+    title: "Bolão da Liberta — crava 5 palpites e leva prêmio",
+    description: "Crava seus 5 palpites, registra o bilhete no WhatsApp e concorre ao prêmio.",
     type: "website",
   },
 };

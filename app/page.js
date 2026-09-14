@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { config } from "./config";
 
 // transforma *palavra* em destaque na cor
@@ -38,7 +38,7 @@ function Check() {
 }
 
 // taça estilizada (não é o troféu oficial)
-function Trophy({ size = 120 }) {
+function Trophy({ size = 104 }) {
   return (
     <svg className="trophy" width={size} height={size} viewBox="0 0 120 120" fill="none" aria-hidden="true">
       <defs>
@@ -53,17 +53,13 @@ function Trophy({ size = 120 }) {
           <stop offset="1" stopColor="#8A6412" />
         </linearGradient>
       </defs>
-      {/* alças */}
       <path d="M30 30c-10 0-16 8-14 18 2 12 12 18 22 18" stroke="url(#g2)" strokeWidth="6" strokeLinecap="round" />
       <path d="M90 30c10 0 16 8 14 18-2 12-12 18-22 18" stroke="url(#g2)" strokeWidth="6" strokeLinecap="round" />
-      {/* copa */}
       <path d="M34 20h52v26c0 16-11 30-26 30S34 62 34 46V20z" fill="url(#g1)" />
       <path d="M34 20h52v6H34z" fill="#FFE58A" opacity="0.9" />
-      {/* haste + base */}
       <path d="M54 76h12l4 14H50l4-14z" fill="url(#g1)" />
       <rect x="40" y="90" width="40" height="8" rx="2" fill="url(#g1)" />
       <rect x="34" y="98" width="52" height="10" rx="3" fill="#A8791A" />
-      {/* brilho */}
       <path d="M44 28c0 14 4 24 12 30" stroke="#fff" strokeOpacity="0.45" strokeWidth="3" strokeLinecap="round" />
     </svg>
   );
@@ -86,24 +82,84 @@ function track(event, params) {
   } catch (e) {}
 }
 
-function escolherPremio(acertos) {
-  const ordenados = [...config.premios].sort((a, b) => b.minimo - a.minimo);
-  return ordenados.find((p) => acertos >= p.minimo) || ordenados[ordenados.length - 1];
+// código curto do bilhete, sem caracteres ambíguos (0/O, 1/I)
+function gerarCodigo() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let out = "";
+  for (let i = 0; i < 6; i++) out += chars[Math.floor(Math.random() * chars.length)];
+  return out;
 }
 
-function montarLinkWhatsApp(premio, acertos, total) {
+function montarLinkWhatsApp(escolhas, codigo) {
+  const linhas = config.palpites
+    .map((p, i) => `${i + 1}. ${p.mercado}: ${p.opcoes[escolhas[i]]}`)
+    .join("\n");
   const msg = config.whatsappMensagem
-    .replace("{premio}", premio.titulo)
-    .replace("{nivel}", premio.nivel)
-    .replace("{acertos}", String(acertos))
-    .replace("{total}", String(total));
+    .replace("{jogo}", config.jogo.nome)
+    .replace("{codigo}", codigo)
+    .replace("{palpites}", linhas);
   return `https://wa.me/${config.whatsappNumero}?text=${encodeURIComponent(msg)}`;
+}
+
+// ---------- contador até o apito ----------
+function useCountdown(iso) {
+  const alvo = useMemo(() => (iso ? new Date(iso).getTime() : null), [iso]);
+  const [agora, setAgora] = useState(() => Date.now());
+  useEffect(() => {
+    if (!alvo) return;
+    const t = setInterval(() => setAgora(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [alvo]);
+  if (!alvo || Number.isNaN(alvo)) return null;
+  const diff = Math.max(0, alvo - agora);
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  return { encerrado: diff === 0, h, m, s };
+}
+
+function Countdown() {
+  const c = useCountdown(config.jogo.apito);
+  if (!c) return null;
+  if (c.encerrado) return <div className="countdown encerrado">Bolão encerrado • Jogo começou</div>;
+  const pad = (n) => String(n).padStart(2, "0");
+  return (
+    <div className="countdown">
+      <span className="countdown-label">Palpites até o apito</span>
+      <span className="countdown-num">
+        {pad(c.h)}:{pad(c.m)}:{pad(c.s)}
+      </span>
+    </div>
+  );
+}
+
+function JogoChip() {
+  const { jogo } = config;
+  return (
+    <div className="jogo-chip">
+      <span className="jogo-nome">{jogo.nome}</span>
+      <span className="jogo-comp">{jogo.competicao}</span>
+    </div>
+  );
+}
+
+function Premiacao({ compacta = false }) {
+  return (
+    <div className={`premiacao${compacta ? " compacta" : ""}`}>
+      {config.premiacao.map((p, i) => (
+        <div className={`premiacao-row${p.destaque ? " destaque" : ""}`} key={i}>
+          <span className="premiacao-faixa">{p.faixa}</span>
+          <span className="premiacao-premio">{p.premio}</span>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 // ============= LANDING =============
 function Landing({ onStart }) {
   const { landing } = config;
-  const n = config.perguntas.length;
+  const n = config.palpites.length;
   return (
     <div className="screen landing">
       <div className="content">
@@ -112,10 +168,13 @@ function Landing({ onStart }) {
           {landing.eyebrow}
         </div>
         <Trophy />
+        <JogoChip />
         <h1>
           <Highlight text={landing.titulo} />
         </h1>
         <p className="sub">{landing.subtitulo}</p>
+        <Premiacao compacta />
+        <Countdown />
       </div>
 
       <div className="actions">
@@ -137,41 +196,38 @@ function Landing({ onStart }) {
   );
 }
 
-// ============= QUIZ =============
-const FEEDBACK_MS = 900;
+// ============= PALPITES =============
+const AVANCO_MS = 380;
 
-function Quiz({ onFinish }) {
-  const { perguntas } = config;
+function Palpites({ onFinish }) {
+  const { palpites } = config;
   const [idx, setIdx] = useState(0);
-  const [escolha, setEscolha] = useState(null);
-  const [acertos, setAcertos] = useState(0);
+  const [escolhas, setEscolhas] = useState([]);
+  const [selecionado, setSelecionado] = useState(null);
 
-  const atual = perguntas[idx];
-  const total = perguntas.length;
-  const respondeu = escolha !== null;
+  const atual = palpites[idx];
+  const total = palpites.length;
 
-  function responder(i) {
-    if (respondeu) return;
-    setEscolha(i);
-    const acertou = i === atual.correta;
-    const novoTotal = acertou ? acertos + 1 : acertos;
-    setAcertos(novoTotal);
-
+  function escolher(i) {
+    if (selecionado !== null) return;
+    setSelecionado(i);
+    const novas = [...escolhas];
+    novas[idx] = i;
+    setEscolhas(novas);
     setTimeout(() => {
       if (idx + 1 >= total) {
-        onFinish(novoTotal);
+        onFinish(novas);
       } else {
         setIdx(idx + 1);
-        setEscolha(null);
+        setSelecionado(null);
       }
-    }, FEEDBACK_MS);
+    }, AVANCO_MS);
   }
 
-  function classeOpcao(i) {
-    if (!respondeu) return "opcao";
-    if (i === atual.correta) return "opcao certa";
-    if (i === escolha) return "opcao errada";
-    return "opcao apagada";
+  function voltar() {
+    if (idx === 0 || selecionado !== null) return;
+    setIdx(idx - 1);
+    setSelecionado(null);
   }
 
   return (
@@ -182,40 +238,43 @@ function Quiz({ onFinish }) {
           <span className="topbar-sep">/</span>
           {String(total).padStart(2, "0")}
         </span>
-        <span className="topbar-score">
-          <span className="topbar-score-num">{acertos}</span> {acertos === 1 ? "acerto" : "acertos"}
-        </span>
+        <span className="topbar-jogo">{config.jogo.nome}</span>
       </div>
       <div className="progress">
         <div
           className="progress-fill"
-          style={{ width: `${((idx + (respondeu ? 1 : 0)) / total) * 100}%` }}
+          style={{ width: `${((idx + (selecionado !== null ? 1 : 0)) / total) * 100}%` }}
         />
       </div>
 
       <div className="content quiz-content" key={idx}>
+        <div className="mercado-tag">{atual.mercado}</div>
         <h2 className="pergunta">{atual.pergunta}</h2>
         <div className="opcoes">
           {atual.opcoes.map((op, i) => (
             <button
               key={i}
-              className={classeOpcao(i)}
-              onClick={() => responder(i)}
-              disabled={respondeu}
+              className={`opcao${selecionado === i ? " marcada" : ""}${
+                selecionado !== null && selecionado !== i ? " apagada" : ""
+              }`}
+              onClick={() => escolher(i)}
+              disabled={selecionado !== null}
             >
               <span className="opcao-letra">{String.fromCharCode(65 + i)}</span>
               <span className="opcao-texto">{op}</span>
-              {respondeu && i === atual.correta && (
+              {selecionado === i && (
                 <span className="opcao-icone">
                   <Check />
                 </span>
               )}
-              {respondeu && i === escolha && i !== atual.correta && (
-                <span className="opcao-icone">✕</span>
-              )}
             </button>
           ))}
         </div>
+        {idx > 0 && (
+          <button className="link-voltar" onClick={voltar} disabled={selecionado !== null}>
+            ← Voltar
+          </button>
+        )}
       </div>
     </div>
   );
@@ -261,44 +320,63 @@ function Loading({ onDone }) {
   );
 }
 
-// ============= RESULTADO =============
-function Resultado({ acertos }) {
-  const total = config.perguntas.length;
-  const premio = escolherPremio(acertos);
-  const link = montarLinkWhatsApp(premio, acertos, total);
-  const { resultado } = config;
+// ============= BILHETE =============
+function Bilhete({ escolhas, codigo, onRefazer }) {
+  const link = montarLinkWhatsApp(escolhas, codigo);
+  const { bilhete, jogo } = config;
 
   useEffect(() => {
-    track("ViewContent", { content_name: "quiz_resultado", value: acertos });
-  }, [acertos]);
+    track("ViewContent", { content_name: "bilhete", content_ids: [codigo] });
+  }, [codigo]);
 
-  function resgatar() {
-    track("Lead", { content_name: premio.nivel, value: acertos });
+  function registrar() {
+    track("Lead", { content_name: "bilhete_whatsapp", content_ids: [codigo] });
   }
 
   return (
-    <div className="screen">
+    <div className="screen bilhete-screen">
       <div className="content">
-        <div className="placar">
-          <span className="placar-num">{acertos}</span>
-          <span className="placar-de">/ {total}</span>
+        <div className="eyebrow">
+          <span className="dot" />
+          {bilhete.eyebrow}
         </div>
-        <p className="placar-label">{resultado.placarLabel}</p>
 
-        <div className="premio">
-          <div className="premio-emoji">{premio.emoji}</div>
-          <div className="premio-nivel">{premio.nivel}</div>
-          <h1 className="premio-titulo">{premio.titulo}</h1>
-          <p className="sub">{premio.descricao}</p>
+        <div className="bilhete">
+          <div className="bilhete-head">
+            <div>
+              <div className="bilhete-jogo">{jogo.nome}</div>
+              <div className="bilhete-comp">{jogo.competicao}</div>
+            </div>
+            <div className="bilhete-codigo">
+              <span>Nº</span>
+              {codigo}
+            </div>
+          </div>
+          <ul className="bilhete-lista">
+            {config.palpites.map((p, i) => (
+              <li key={i}>
+                <span className="bilhete-mercado">{p.mercado}</span>
+                <span className="bilhete-escolha">{p.opcoes[escolhas[i]]}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="bilhete-foot">
+            <Premiacao compacta />
+          </div>
         </div>
+
+        <h1 className="bilhete-titulo">{bilhete.titulo}</h1>
       </div>
 
       <div className="actions">
-        <a className="cta" href={link} onClick={resgatar}>
+        <a className="cta" href={link} onClick={registrar}>
           <WhatsIcon />
-          {resultado.ctaLabel}
+          {bilhete.ctaLabel}
         </a>
-        <p className="cta-hint">{resultado.hint}</p>
+        <p className="cta-hint">{bilhete.hint}</p>
+        <button className="link-refazer" onClick={onRefazer}>
+          {bilhete.refazerLabel}
+        </button>
         <Footer />
       </div>
     </div>
@@ -308,24 +386,28 @@ function Resultado({ acertos }) {
 // ============= APP =============
 export default function Home() {
   const [step, setStep] = useState("landing");
-  const [acertos, setAcertos] = useState(0);
+  const [escolhas, setEscolhas] = useState([]);
+  const [codigo, setCodigo] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [step]);
 
-  function finishQuiz(n) {
-    setAcertos(n);
-    setStep(config.loading.segundos > 0 ? "loading" : "resultado");
+  function finish(novas) {
+    setEscolhas(novas);
+    setCodigo(gerarCodigo());
+    setStep(config.loading.segundos > 0 ? "loading" : "bilhete");
   }
 
   return (
     <div className="app">
       <div className="pitch" aria-hidden="true" />
-      {step === "landing" && <Landing onStart={() => setStep("quiz")} />}
-      {step === "quiz" && <Quiz onFinish={finishQuiz} />}
-      {step === "loading" && <Loading onDone={() => setStep("resultado")} />}
-      {step === "resultado" && <Resultado acertos={acertos} />}
+      {step === "landing" && <Landing onStart={() => setStep("palpites")} />}
+      {step === "palpites" && <Palpites onFinish={finish} />}
+      {step === "loading" && <Loading onDone={() => setStep("bilhete")} />}
+      {step === "bilhete" && (
+        <Bilhete escolhas={escolhas} codigo={codigo} onRefazer={() => setStep("palpites")} />
+      )}
     </div>
   );
 }
