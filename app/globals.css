@@ -398,12 +398,13 @@ h1 .hl {
   gap: 10px;
   width: 100%;
   min-height: 66px;
-  padding: 18px 22px;
+  padding: 18px 16px;
   border-radius: 14px;
   border: none;
   background: var(--gold);
   color: #140f02;
-  font-size: 17px;
+  font-size: 15.5px;
+  white-space: nowrap;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -675,4 +676,139 @@ h1 .hl {
 .slip-foot strong {
   color: var(--text);
   font-size: 13px;
+}
+
+/* ======================================================
+   ANIMAÇÕES (gamificação)
+   ====================================================== */
+@keyframes sobe {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pop {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+@keyframes carimbo {
+  0% { opacity: 0; transform: scale(1.25) rotate(-3deg); }
+  60% { opacity: 1; transform: scale(0.97) rotate(0.5deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+@keyframes brilho {
+  0%, 65% { transform: translateX(-130%) skewX(-18deg); }
+  100% { transform: translateX(230%) skewX(-18deg); }
+}
+@keyframes pulsoBtn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(242, 193, 78, 0.45); }
+  60% { box-shadow: 0 0 0 14px rgba(242, 193, 78, 0); }
+}
+@keyframes flutua {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  15% { opacity: 0.9; }
+  85% { opacity: 0.4; }
+  100% { transform: translateY(-140px) scale(0.4); opacity: 0; }
+}
+@keyframes cai {
+  0% { transform: translateY(-20px) rotate(0); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(540deg); opacity: 0; }
+}
+@keyframes marcada {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+@keyframes anel {
+  0% { box-shadow: 0 0 0 0 rgba(242, 193, 78, 0.7); }
+  100% { box-shadow: 0 0 0 16px rgba(242, 193, 78, 0); }
+}
+@keyframes barraBrilho {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* hero: entrada escalonada */
+.hero-top .label { animation: sobe 0.5s 0.15s ease both; }
+.hero-copy h1 { animation: sobe 0.6s 0.3s ease both; }
+.sticky-inner { animation: sobe 0.5s 0.5s ease both; }
+
+/* partículas douradas */
+.particulas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.particulas span {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffe08a;
+  box-shadow: 0 0 8px 2px rgba(242, 193, 78, 0.6);
+  animation: flutua linear infinite;
+  opacity: 0;
+}
+.particulas span:nth-child(odd) { width: 3px; height: 3px; }
+
+/* CTA: brilho passando + pulso */
+.btn {
+  position: relative;
+  overflow: hidden;
+  animation: pulsoBtn 2.6s ease-out infinite;
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 38%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  animation: brilho 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* palpites */
+.fixture { animation: sobe 0.35s ease both; }
+.fixture-escudos img { animation: pop 0.45s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.fixture-escudos .time:last-child img { animation-delay: 0.2s; }
+.fixture-escudos.rodada img:nth-child(2) { animation-delay: 0.18s; }
+.fixture-escudos.rodada img:nth-child(3) { animation-delay: 0.26s; }
+.fixture-escudos.rodada img:nth-child(4) { animation-delay: 0.34s; }
+.palpite .label, .palpite .pergunta { animation: sobe 0.4s 0.12s ease both; }
+.opcao { animation: sobe 0.4s ease both; }
+.opcao.marcada { animation: marcada 0.3s ease, anel 0.6s ease-out; }
+.progress-fill {
+  background: linear-gradient(90deg, var(--gold-2), var(--gold), #ffe08a, var(--gold));
+  background-size: 200% 100%;
+  animation: barraBrilho 2.2s linear infinite;
+}
+
+/* bilhete: carimbo + linhas + confete */
+.slip { animation: carimbo 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.slip-lista li { animation: sobe 0.35s ease both; }
+.slip-foot { animation: sobe 0.4s 0.85s ease both; }
+.bilhete-screen .hero.compacto { animation: sobe 0.4s ease both; }
+.confete {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  overflow: hidden;
+}
+.confete span {
+  position: absolute;
+  top: -20px;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  animation: cai ease-in both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

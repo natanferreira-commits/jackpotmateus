@@ -159,6 +159,73 @@ function Rodape() {
   return <p className="rodape">© {new Date().getFullYear()} {config.marca}. +18. Jogue com responsabilidade.</p>;
 }
 
+// partículas douradas flutuando (posições fixas pra não quebrar a hidratação)
+const PARTICULAS = [
+  [8, 62, 0, 7], [18, 78, 1.2, 9], [27, 55, 2.1, 8], [38, 84, 0.6, 10], [47, 70, 1.8, 7],
+  [56, 88, 0.3, 9], [64, 58, 2.6, 8], [73, 80, 1.1, 10], [82, 66, 0.9, 7], [91, 76, 2.3, 9],
+  [14, 40, 1.5, 11], [86, 44, 0.4, 11],
+];
+function Particulas() {
+  return (
+    <div className="particulas" aria-hidden="true">
+      {PARTICULAS.map(([x, y, d, t], i) => (
+        <span key={i} style={{ left: x + "%", top: y + "%", animationDelay: d + "s", animationDuration: t + "s" }} />
+      ))}
+    </div>
+  );
+}
+
+const CONFETE = Array.from({ length: 26 }, (_, i) => ({
+  x: (i * 37) % 100,
+  d: (i % 7) * 0.12,
+  t: 1.6 + (i % 5) * 0.25,
+  r: (i * 53) % 360,
+  c: i % 3 === 0 ? "#fff" : i % 3 === 1 ? "#f2c14e" : "#b8861f",
+}));
+function Confete() {
+  return (
+    <div className="confete" aria-hidden="true">
+      {CONFETE.map((c, i) => (
+        <span
+          key={i}
+          style={{
+            left: c.x + "%",
+            animationDelay: c.d + "s",
+            animationDuration: c.t + "s",
+            background: c.c,
+            transform: "rotate(" + c.r + "deg)",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// número do bilhete "rolando" antes de fixar
+function CodigoRolando({ codigo }) {
+  const [txt, setTxt] = useState(codigo);
+  useEffect(() => {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let n = 0;
+    const t = setInterval(() => {
+      n++;
+      if (n > 14) {
+        clearInterval(t);
+        setTxt(codigo);
+        return;
+      }
+      setTxt(
+        codigo
+          .split("")
+          .map((ch, i) => (i < Math.floor(n / 3) ? ch : chars[Math.floor(Math.random() * chars.length)]))
+          .join("")
+      );
+    }, 55);
+    return () => clearInterval(t);
+  }, [codigo]);
+  return <>#{txt}</>;
+}
+
 function StickyCta({ children, hint }) {
   return (
     <div className="sticky">
@@ -180,6 +247,7 @@ function Landing({ onStart }) {
       <Header right={rodada.nome} />
 
       <section className={`hero-img${landing.heroImage ? " com-imagem" : ""}`} style={heroStyle}>
+        <Particulas />
         <div className="hero-top">
           <span className="label">{landing.label}</span>
         </div>
@@ -305,6 +373,7 @@ function Palpites({ onFinish, onHome }) {
             <button
               key={i}
               className={`opcao${selecionado === i ? " marcada" : ""}${bloqueado && selecionado !== i ? " apagada" : ""}`}
+              style={{ animationDelay: 0.08 + i * 0.06 + "s" }}
               onClick={() => escolher(i)}
               disabled={bloqueado}
             >
@@ -378,6 +447,7 @@ function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
     <div className="page">
       <Header right={bilhete.label} onHome={onHome} />
 
+      <Confete />
       <main className="wrap">
         <section className="hero compacto">
           <span className="label">{bilhete.label}</span>
@@ -392,12 +462,13 @@ function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
               <div className="slip-sub">{rodada.nome}</div>
             </div>
             <div className="slip-num">
-              <span>Bilhete</span>#{codigo}
+              <span>Bilhete</span>
+              <CodigoRolando codigo={codigo} />
             </div>
           </div>
           <ul className="slip-lista">
             {config.palpites.map((p, i) => (
-              <li key={i}>
+              <li key={i} style={{ animationDelay: 0.35 + i * 0.09 + "s" }}>
                 <div className="slip-jogo">
                   {nomeJogo(p)} <span>· {p.mercado}</span>
                 </div>
