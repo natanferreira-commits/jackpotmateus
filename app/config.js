@@ -6,7 +6,7 @@
 export const config = {
   // >>> WhatsApp que recebe o bilhete (só dígitos, com DDI+DDD) <<<
   // Ex: "5511999999999"
-  whatsappNumero: "5500000000000",
+  whatsappNumero: "559180194075",
 
   // Mensagem que chega pré-preenchida no WhatsApp.
   // Variáveis: {rodada} {codigo} {palpites} (lista numerada, uma por linha)
@@ -29,11 +29,12 @@ export const config = {
     nome: "Quartas de final • Volta",
     // Encerramento dos palpites (ISO com fuso). "" desliga o contador.
     encerramento: "2026-09-15T19:00:00-03:00",
+    // escudos em /public/escudos
     jogos: [
-      { casa: "Platense", fora: "Fluminense", quando: "Ter 15/09 • 19h" },
-      { casa: "LDU", fora: "Palmeiras", quando: "Qua 16/09 • 19h" },
-      { casa: "Corinthians", fora: "Estudiantes", quando: "Qua 16/09 • 21h30" },
-      { casa: "Flamengo", fora: "Ind. del Valle", quando: "Qui 17/09 • 21h30" },
+      { casa: "Platense", fora: "Fluminense", quando: "Ter 15/09 • 19h", escudoCasa: "/escudos/platense.png", escudoFora: "/escudos/fluminense.png" },
+      { casa: "LDU", fora: "Palmeiras", quando: "Qua 16/09 • 19h", escudoCasa: "/escudos/ldu.png", escudoFora: "/escudos/palmeiras.png" },
+      { casa: "Corinthians", fora: "Estudiantes", quando: "Qua 16/09 • 21h30", escudoCasa: "/escudos/corinthians.png", escudoFora: "/escudos/estudiantes.png" },
+      { casa: "Flamengo", fora: "Ind. del Valle", quando: "Qui 17/09 • 21h30", escudoCasa: "/escudos/flamengo.png", escudoFora: "/escudos/idv.png" },
     ],
   },
 
@@ -42,11 +43,12 @@ export const config = {
 
   // ---------- Landing ----------
   landing: {
+    // Imagem de fundo do hero (1080x1920, em /public). "" usa fundo liso.
+    heroImage: "/hero.webp",
     label: "Bolão • Quartas de final",
     // a palavra entre *asteriscos* vira destaque na cor
-    titulo: "Crava 5 palpites da rodada e leva *R$ 500*",
-    subtitulo:
-      "Um palpite por jogo das quartas, mais um da rodada inteira. Acertou os cinco, o Pix é seu.",
+    titulo: "Crava 5 palpites e leva *R$ 500*",
+    subtitulo: "Um palpite por jogo das quartas, mais um da rodada. Cravou os cinco, o Pix é seu.",
     ctaLabel: "Fazer meus palpites",
     ctaHint: "Grátis. Resultado depois do último jogo.",
     comoFunciona: [
@@ -86,6 +88,8 @@ export const config = {
     },
     {
       jogo: null,
+      // escudos mostrados no card quando o palpite é da rodada inteira
+      escudos: ["/escudos/fluminense.png", "/escudos/palmeiras.png", "/escudos/corinthians.png", "/escudos/flamengo.png"],
       mercado: "Brasileiros na semi",
       pergunta: "Quantos brasileiros passam pra semifinal?",
       opcoes: ["2 ou menos", "3", "Os 4"],

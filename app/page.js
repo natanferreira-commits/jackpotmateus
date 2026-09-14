@@ -167,39 +167,30 @@ function StickyCta({ children, hint }) {
 // ============= LANDING =============
 function Landing({ onStart }) {
   const { landing, oferta, rodada } = config;
+  const heroStyle = landing.heroImage ? { backgroundImage: `url(${landing.heroImage})` } : undefined;
   return (
     <div className="page">
       <Marquee />
-      <Header right={rodada.nome} />
 
-      <main className="wrap">
-        <section className="hero">
+      <section className={`hero-img${landing.heroImage ? " com-imagem" : ""}`} style={heroStyle}>
+        <Header right={rodada.nome} />
+        <div className="wrap hero-copy">
           <span className="label">{landing.label}</span>
           <h1>
             <Highlight text={landing.titulo} />
           </h1>
-          <p className="lead">{landing.subtitulo}</p>
+        </div>
+        <div className="hero-bottom">
           <Countdown />
-        </section>
+        </div>
+      </section>
 
+      <main className="wrap">
         <section className="oferta">
           <div className="oferta-valor">{oferta.valor}</div>
           <div className="oferta-regra">{oferta.regra}</div>
         </section>
-
-        <section className="bloco">
-          <h2 className="bloco-titulo">Os jogos da rodada</h2>
-          <ul className="jogos">
-            {rodada.jogos.map((j, i) => (
-              <li key={i}>
-                <span className="jogo-times">
-                  {j.casa} <em>x</em> {j.fora}
-                </span>
-                <span className="jogo-quando">{j.quando}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <p className="lead">{landing.subtitulo}</p>
 
         <section className="bloco">
           <h2 className="bloco-titulo">Como funciona</h2>
@@ -273,15 +264,26 @@ function Palpites({ onFinish }) {
         <div className="fixture">
           {jogo ? (
             <>
-              <div className="fixture-times">
-                <span>{jogo.casa}</span>
+              <div className="fixture-escudos">
+                <div className="time">
+                  {jogo.escudoCasa && <img src={jogo.escudoCasa} alt="" />}
+                  <span>{jogo.casa}</span>
+                </div>
                 <em>x</em>
-                <span>{jogo.fora}</span>
+                <div className="time">
+                  {jogo.escudoFora && <img src={jogo.escudoFora} alt="" />}
+                  <span>{jogo.fora}</span>
+                </div>
               </div>
               <div className="fixture-quando">{jogo.quando}</div>
             </>
           ) : (
             <>
+              <div className="fixture-escudos rodada">
+                {(atual.escudos || rodada.jogos.map((j) => j.escudoCasa)).map((src, i) => (
+                  <img key={i} src={src} alt="" />
+                ))}
+              </div>
               <div className="fixture-times">
                 <span>Rodada inteira</span>
               </div>
