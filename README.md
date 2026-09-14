@@ -17,6 +17,7 @@ Tudo que muda entre jogos/afiliados está em [`app/config.js`](app/config.js):
 | `oferta` | `valor` e `regra` do prêmio (bloco dourado da landing e rodapé do bilhete). |
 | `rodada` | `nome`, `encerramento` (ISO com fuso, liga o contador) e `jogos` (casa, fora, quando). |
 | `marquee` | Itens da faixa que roda no topo. |
+| `gaId` | Google Analytics 4 (`G-XXXXXXXXXX`). Vazio = não carrega. |
 | `pixelId` | Meta Pixel. Vazio = não carrega. |
 | `landing` | Copy da primeira tela. `*palavra*` vira destaque. |
 | `palpites` | Lista de perguntas. `jogo` é o índice em `rodada.jogos` (ou `null` pra palpite da rodada inteira), `mercado` é o rótulo curto. |
@@ -34,11 +35,32 @@ Tudo que muda entre jogos/afiliados está em [`app/config.js`](app/config.js):
 
 Gerado no navegador, 6 caracteres sem 0/O/1/I. Não é único de verdade (não tem servidor), serve pra referência na conversa. Se precisar de unicidade, o caminho é salvar o bilhete numa planilha via Apps Script antes de abrir o WhatsApp (igual ao Placar Certo).
 
+## Métricas (Google Analytics 4)
+
+Preencha `gaId` no `config.js` com o ID de medição (`G-XXXXXXXXXX`). Sem isso nada é enviado.
+
+Eventos que a página dispara (além do `page_view` automático):
+
+| Evento | Quando | Parâmetros |
+| --- | --- | --- |
+| `cta_start` | clicou em "Fazer meus palpites" | — |
+| `palpite` | respondeu um palpite | `etapa` (1..8), `jogo`, `mercado`, `escolha` |
+| `bilhete_view` | chegou no bilhete | `codigo` |
+| `whatsapp_click` | clicou em "Registrar no WhatsApp" | `codigo` |
+| `refazer` | clicou em "Refazer palpites" | `codigo` |
+
+Onde ver no GA4:
+
+- **Tempo real** (Relatórios → Tempo real): quem está na página agora e os eventos dos últimos 30 min.
+- **Cliques no WhatsApp**: Relatórios → Engajamento → Eventos → `whatsapp_click`. Marque como evento principal em Administrador → Eventos → "Marcar como evento principal".
+- **Desistência por etapa**: Explorar → Exploração de funil, com as etapas `page_view` → `cta_start` → `palpite` (etapa = 1) → … → `palpite` (etapa = 8) → `bilhete_view` → `whatsapp_click`. O GA4 mostra a taxa de abandono entre cada uma.
+- Pra filtrar por etapa e por escolha nos relatórios padrão, registre `etapa`, `mercado` e `escolha` como dimensões personalizadas (Administrador → Definições personalizadas). O funil no Explorar funciona sem isso.
+
 ## Eventos do Pixel (quando `pixelId` estiver preenchido)
 
 - `PageView` — carregou a página
-- `ViewContent` (`content_name: "bilhete"`) — chegou no bilhete
-- `Lead` (`content_name: "bilhete_whatsapp"`) — clicou em registrar
+- `ViewContent` — chegou no bilhete
+- `Lead` — clicou em registrar no WhatsApp
 
 Otimizar campanha por `Lead`.
 

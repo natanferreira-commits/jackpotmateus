@@ -37,10 +37,16 @@ function Arrow() {
   );
 }
 
-function track(event, params) {
+// Evento pro GA4 (e opcionalmente pro Meta Pixel)
+function track(evento, params = {}, pixel = null) {
   try {
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", event, params);
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", evento, params);
+    }
+  } catch (e) {}
+  try {
+    if (pixel && typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", pixel, params);
     }
   } catch (e) {}
 }
@@ -286,7 +292,13 @@ function Landing({ onStart }) {
       </main>
 
       <StickyCta hint={<Countdown fallback={landing.ctaHint} />}>
-        <button className="btn" onClick={onStart}>
+        <button
+          className="btn"
+          onClick={() => {
+            track("cta_start");
+            onStart();
+          }}
+        >
           {landing.ctaLabel} <Arrow />
         </button>
       </StickyCta>
@@ -314,6 +326,12 @@ function Palpites({ onFinish, onHome }) {
     const novas = [...escolhas];
     novas[idx] = i;
     setEscolhas(novas);
+    track("palpite", {
+      etapa: idx + 1,
+      jogo: jogo ? `${jogo.casa} x ${jogo.fora}` : "rodada",
+      mercado: atual.mercado,
+      escolha: atual.opcoes[i],
+    });
     setTimeout(() => {
       if (idx + 1 >= total) {
         onFinish(novas);
@@ -440,11 +458,11 @@ function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
   const { bilhete, rodada, oferta } = config;
 
   useEffect(() => {
-    track("ViewContent", { content_name: "bilhete", content_ids: [codigo] });
+    track("bilhete_view", { codigo }, "ViewContent");
   }, [codigo]);
 
   function registrar() {
-    track("Lead", { content_name: "bilhete_whatsapp", content_ids: [codigo] });
+    track("whatsapp_click", { codigo }, "Lead");
   }
 
   return (
@@ -486,7 +504,13 @@ function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
           </div>
         </section>
 
-        <button className="voltar centro-btn" onClick={onRefazer}>
+        <button
+          className="voltar centro-btn"
+          onClick={() => {
+            track("refazer", { codigo });
+            onRefazer();
+          }}
+        >
           {bilhete.refazerLabel}
         </button>
 

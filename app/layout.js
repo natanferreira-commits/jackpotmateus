@@ -27,6 +27,22 @@ export const viewport = {
   initialScale: 1,
 };
 
+function GA4({ id }) {
+  if (!id) return null;
+  const code = [
+    "window.dataLayer=window.dataLayer||[];",
+    "function gtag(){dataLayer.push(arguments);}",
+    "gtag('js',new Date());",
+    "gtag('config','" + id + "');",
+  ].join("");
+  return (
+    <>
+      <script async src={"https://www.googletagmanager.com/gtag/js?id=" + id} />
+      <script dangerouslySetInnerHTML={{ __html: code }} />
+    </>
+  );
+}
+
 function Pixel({ id }) {
   if (!id) return null;
   const code = [
@@ -44,6 +60,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR" className={archivo.variable}>
       <head>
+        <GA4 id={config.gaId} />
         <Pixel id={config.pixelId} />
       </head>
       <body>{children}</body>
