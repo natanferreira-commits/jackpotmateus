@@ -46,7 +46,7 @@ export const config = {
     heroImage: "/hero.webp",
     label: "Bolão do Caumo • Quartas de final",
     // a palavra entre *asteriscos* vira destaque na cor
-    titulo: "Crava 5 palpites e leva *R$ 500*",
+    titulo: "*R$ 500* pra quem cravar a rodada",
     subtitulo: "Um palpite por jogo das quartas, mais um da rodada. Cravou os cinco, o Pix é seu.",
     ctaLabel: "Fazer meus palpites",
     ctaHint: "Grátis. Resultado depois do último jogo.",
