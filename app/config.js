@@ -1,6 +1,6 @@
 // ============================================================
 //  CONFIG DO BOLÃO — troque só o que está aqui
-//  Contexto atual: quartas de final da Libertadores, jogos de volta
+//  Contexto atual: Brasileirão 2026, 28ª rodada, jogos de sábado 19/09
 // ============================================================
 
 export const config = {
@@ -10,7 +10,11 @@ export const config = {
 
   // Mensagem que chega pré-preenchida no WhatsApp.
   // Variáveis: {rodada} {codigo} {palpites} (lista numerada, uma por linha)
-  whatsappMensagem: "Quero validar meu palpite",
+  whatsappMensagem: "Quero validar meu palpite #{codigo}",
+
+  // Planilha de bilhetes: URL do app da web do Apps Script (ver apps-script.gs).
+  // "" = não grava nada. Com URL, cada bilhete gerado e cada clique no WhatsApp vira uma linha.
+  planilhaUrl: "",
 
   marca: "Mateus Caumo",
 
@@ -20,43 +24,52 @@ export const config = {
   // Meta Pixel ID (deixe "" pra não carregar)
   pixelId: "",
 
+  // ---------- Título e descrição da página (aba do navegador, preview do link) ----------
+  seo: {
+    titulo: "Bolão do Brasileirão — R$ 500 pra quem cravar 10 palpites",
+    descricao: "Dois palpites por jogo de sábado do Brasileirão. Cravou os 10, leva R$ 500 no Pix. Grátis.",
+  },
+
   // ---------- Oferta ----------
   oferta: {
     valor: "R$ 500",
-    regra: "no Pix pra quem cravar os 8",
+    regra: "no Pix pra quem cravar os 10",
   },
 
   // ---------- Rodada ----------
   rodada: {
-    nome: "Quartas de final • Volta",
+    // id curto: vai em todo evento do GA4 pra separar uma rodada da outra
+    id: "br26-r28-sab",
+    nome: "28ª rodada • Sábado",
     // Encerramento dos palpites (ISO com fuso). "" desliga o contador.
-    encerramento: "2026-09-15T19:00:00-03:00",
+    encerramento: "2026-09-19T16:00:00-03:00",
     // escudos em /public/escudos
     jogos: [
-      { casa: "Platense", fora: "Fluminense", quando: "Ter 15/09 • 19h", escudoCasa: "/escudos/platense.png", escudoFora: "/escudos/fluminense.png" },
-      { casa: "LDU", fora: "Palmeiras", quando: "Qua 16/09 • 19h", escudoCasa: "/escudos/ldu.png", escudoFora: "/escudos/palmeiras.png" },
-      { casa: "Corinthians", fora: "Estudiantes", quando: "Qua 16/09 • 21h30", escudoCasa: "/escudos/corinthians.png", escudoFora: "/escudos/estudiantes.png" },
-      { casa: "Flamengo", fora: "Ind. del Valle", quando: "Qui 17/09 • 21h30", escudoCasa: "/escudos/flamengo.png", escudoFora: "/escudos/idv.png" },
+      { casa: "Atlético-MG", fora: "Chapecoense", quando: "Sáb 19/09 • 16h", escudoCasa: "/escudos/atletico-mg.png", escudoFora: "/escudos/chapecoense.png" },
+      { casa: "Mirassol", fora: "Botafogo", quando: "Sáb 19/09 • 17h", escudoCasa: "/escudos/mirassol.png", escudoFora: "/escudos/botafogo.png" },
+      { casa: "Remo", fora: "Santos", quando: "Sáb 19/09 • 18h30", escudoCasa: "/escudos/remo.png", escudoFora: "/escudos/santos.png" },
+      { casa: "Vasco", fora: "Coritiba", quando: "Sáb 19/09 • 20h30", escudoCasa: "/escudos/vasco.png", escudoFora: "/escudos/coritiba.png" },
+      { casa: "São Paulo", fora: "Internacional", quando: "Sáb 19/09 • 21h", escudoCasa: "/escudos/sao-paulo.png", escudoFora: "/escudos/internacional.png" },
     ],
   },
 
   // Faixa que roda no topo (separada por •)
-  marquee: ["Bolão do Caumo", "Libertadores", "R$ 500 no Pix", "Quartas de final", "Grátis", "8 palpites"],
+  marquee: ["Bolão do Caumo", "Brasileirão", "R$ 500 no Pix", "Rodada de sábado", "Grátis", "10 palpites"],
 
   // ---------- Landing ----------
   landing: {
     // Imagem de fundo do hero (1080x1920, em /public). "" usa fundo liso.
     heroImage: "/hero.webp",
-    label: "Bolão do Caumo • Quartas de final",
+    label: "Bolão do Caumo • Brasileirão",
     // a palavra entre *asteriscos* vira destaque na cor
     titulo: "*R$ 500* pra quem cravar a rodada",
-    subtitulo: "Dois palpites por jogo das quartas: o resultado e um mercado. Cravou os oito, o Pix é seu.",
+    subtitulo: "Dois palpites por jogo de sábado do Brasileirão: o resultado e um mercado. Cravou os dez, o Pix é seu.",
     ctaLabel: "Fazer meus palpites",
-    ctaHint: "Grátis. Resultado depois do último jogo.",
+    ctaHint: "Grátis. Resultado sábado à noite.",
     comoFunciona: [
-      "Responde as 8 perguntas em 2 minutos",
+      "Responde as 10 perguntas em 2 minutos",
       "Registra o bilhete no WhatsApp",
-      "Cravou os 8, recebe R$ 500 no Pix",
+      "Cravou os 10, recebe R$ 500 no Pix",
     ],
   },
 
@@ -64,54 +77,67 @@ export const config = {
   // "jogo" é o índice em rodada.jogos, ou null pra palpite da rodada inteira.
   // "mercado" é o rótulo curto que vai no bilhete e no WhatsApp.
   palpites: [
-    // --- Platense x Fluminense ---
+    // --- Atlético-MG x Chapecoense ---
     {
       jogo: 0,
       mercado: "Resultado",
-      pergunta: "Quem vence no tempo normal?",
-      opcoes: ["Platense", "Empate", "Fluminense"],
+      pergunta: "Quem vence o jogo?",
+      opcoes: ["Atlético-MG", "Empate", "Chapecoense"],
     },
     {
       jogo: 0,
-      mercado: "Ambas marcam",
-      pergunta: "Os dois times marcam?",
-      opcoes: ["Sim", "Não"],
-    },
-    // --- LDU x Palmeiras ---
-    {
-      jogo: 1,
-      mercado: "Resultado",
-      pergunta: "Quem vence no tempo normal?",
-      opcoes: ["LDU", "Empate", "Palmeiras"],
-    },
-    {
-      jogo: 1,
-      mercado: "Escanteios",
-      pergunta: "Vai ter 10 ou mais escanteios?",
-      opcoes: ["Sim, 10 ou mais", "Não, menos de 10"],
-    },
-    // --- Corinthians x Estudiantes ---
-    {
-      jogo: 2,
-      mercado: "Resultado",
-      pergunta: "Quem vence no tempo normal?",
-      opcoes: ["Corinthians", "Empate", "Estudiantes"],
-    },
-    {
-      jogo: 2,
       mercado: "Total de gols",
       pergunta: "Quantos gols no jogo?",
       opcoes: ["3 ou mais", "Até 2"],
     },
-    // --- Flamengo x Ind. del Valle ---
+    // --- Mirassol x Botafogo ---
+    {
+      jogo: 1,
+      mercado: "Resultado",
+      pergunta: "Quem vence o jogo?",
+      opcoes: ["Mirassol", "Empate", "Botafogo"],
+    },
+    {
+      jogo: 1,
+      mercado: "Ambas marcam",
+      pergunta: "Os dois times marcam?",
+      opcoes: ["Sim", "Não"],
+    },
+    // --- Remo x Santos ---
+    {
+      jogo: 2,
+      mercado: "Resultado",
+      pergunta: "Quem vence o jogo?",
+      opcoes: ["Remo", "Empate", "Santos"],
+    },
+    {
+      jogo: 2,
+      mercado: "Gol no 1º tempo",
+      pergunta: "Sai gol no primeiro tempo?",
+      opcoes: ["Sim", "Não"],
+    },
+    // --- Vasco x Coritiba ---
     {
       jogo: 3,
       mercado: "Resultado",
-      pergunta: "Quem vence no tempo normal?",
-      opcoes: ["Flamengo", "Empate", "Ind. del Valle"],
+      pergunta: "Quem vence o jogo?",
+      opcoes: ["Vasco", "Empate", "Coritiba"],
     },
     {
       jogo: 3,
+      mercado: "Escanteios",
+      pergunta: "Vai ter 10 ou mais escanteios?",
+      opcoes: ["Sim, 10 ou mais", "Não, menos de 10"],
+    },
+    // --- São Paulo x Internacional ---
+    {
+      jogo: 4,
+      mercado: "Resultado",
+      pergunta: "Quem vence o jogo?",
+      opcoes: ["São Paulo", "Empate", "Internacional"],
+    },
+    {
+      jogo: 4,
       mercado: "Cartão vermelho",
       pergunta: "Vai ter cartão vermelho?",
       opcoes: ["Sim", "Não"],
@@ -128,11 +154,13 @@ export const config = {
 
   // ---------- Bilhete ----------
   bilhete: {
+    // título que aparece dentro do bilhete
+    slipTitulo: "Bolão do Brasileirão",
     label: "Seu bilhete",
     titulo: "Registra no WhatsApp pra valer",
-    subtitulo: "Sem registro o bilhete não conta. É só apertar o botão que a mensagem já vai pronta.",
+    subtitulo: "Sem registro o bilhete não conta. Aperta o botão que a mensagem já vai com o número do bilhete.",
     ctaLabel: "Registrar no WhatsApp",
-    ctaHint: "Abre o WhatsApp com o bilhete preenchido",
+    ctaHint: "Abre o WhatsApp com o número do seu bilhete",
     refazerLabel: "Refazer palpites",
   },
 
@@ -141,7 +169,7 @@ export const config = {
     titulo: "Aviso importante",
     linhas: [
       "Bolão gratuito, sem depósito. Só concorre quem registrar o bilhete no WhatsApp antes do primeiro jogo.",
-      "Se mais de um bilhete cravar os 8, o prêmio é sorteado entre eles.",
+      "Se mais de um bilhete cravar os 10, o prêmio é sorteado entre eles.",
       "Apostas esportivas envolvem risco financeiro. Nunca aposte mais do que pode perder.",
       "Conteúdo destinado a maiores de 18 anos. Jogue com responsabilidade.",
     ],

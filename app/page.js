@@ -41,13 +41,33 @@ function Arrow() {
 function track(evento, params = {}, pixel = null) {
   try {
     if (typeof window !== "undefined" && typeof window.gtag === "function") {
-      window.gtag("event", evento, params);
+      window.gtag("event", evento, { rodada: config.rodada.id || config.rodada.nome, ...params });
     }
   } catch (e) {}
   try {
     if (pixel && typeof window !== "undefined" && window.fbq) {
       window.fbq("track", pixel, params);
     }
+  } catch (e) {}
+}
+
+// Grava na planilha (Apps Script). text/plain + no-cors evita preflight de CORS.
+function gravarPlanilha(tipo, codigo, escolhas) {
+  const url = config.planilhaUrl;
+  if (!url || typeof window === "undefined") return;
+  try {
+    const palpites = config.palpites.map((pp, i) => ({
+      jogo: nomeJogo(pp),
+      mercado: pp.mercado,
+      escolha: escolhas ? pp.opcoes[escolhas[i]] : "",
+    }));
+    fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      keepalive: true,
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ tipo, codigo, rodada: config.rodada.id || config.rodada.nome, palpites }),
+    }).catch(() => {});
   } catch (e) {}
 }
 
@@ -459,10 +479,13 @@ function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
 
   useEffect(() => {
     track("bilhete_view", { codigo }, "ViewContent");
+    gravarPlanilha("bilhete", codigo, escolhas);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codigo]);
 
   function registrar() {
     track("whatsapp_click", { codigo }, "Lead");
+    gravarPlanilha("whatsapp", codigo, escolhas);
   }
 
   return (
@@ -480,7 +503,7 @@ function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
         <section className="slip">
           <div className="slip-head">
             <div>
-              <div className="slip-titulo">Bolão da Libertadores</div>
+              <div className="slip-titulo">{bilhete.slipTitulo}</div>
               <div className="slip-sub">{rodada.nome}</div>
             </div>
             <div className="slip-num">

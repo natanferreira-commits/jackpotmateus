@@ -1,33 +1,31 @@
-# Mensagens de disparo — Bolão do Caumo (Libertadores)
+# Mensagens de disparo — Bolão do Caumo (Brasileirão, sábado 19/09)
 
-Quem fala é o Mateus, em primeira pessoa.
+Quem fala é o Mateus, em primeira pessoa. Palpites fecham sábado 19/09 às 16h.
 
-Trocar `https://quiz.mateuscaumo.com.br` pela URL da Vercel. Palpites fecham ter 15/09 às 19h.
-
-## 1. Disparo principal (segunda 14/09 ou terça de manhã)
+## 1. Disparo principal (sexta 18/09 à noite ou sábado de manhã)
 
 📢 AVISO - R$500 no PIX
 
-Quartas de final, jogos de volta essa semana. Fluminense, Palmeiras, Corinthians e Flamengo em campo.
+Sábado de Brasileirão: Atlético-MG, Botafogo, Santos, Vasco, São Paulo e Inter em campo.
 
-Montei uma dinâmica rápida: você manda os palpites e monta um bilhete.
-Cravou? → R$ 500 no Pix.
+Montei mais um bolão: você manda os palpites e monta um bilhete.
+Cravou os 10? → R$ 500 no Pix.
 
 ✅ Participar é grátis
-✅ Leva 1 minuto
+✅ Leva 2 minutos
 ✅ Registra o bilhete aqui no WhatsApp
 
-⏰ Fecha terça 19h, antes de Platense x Fluminense.
+⏰ Fecha sábado 16h, antes de Atlético-MG x Chapecoense.
 
 👉 https://quiz.mateuscaumo.com.br
 
-## 2. Lembrete (terça 15/09, ~15h)
+## 2. Lembrete (sábado 19/09, ~12h)
 
-⏰ *Últimas 4 horas pro bolão da Liberta*
+⏰ Últimas 4 horas pro bolão do Brasileirão
 
-8 palpites, R$ 500 no Pix pra quem cravar tudo. Grátis.
+10 palpites nos jogos de hoje, R$ 500 no Pix pra quem cravar tudo. Grátis.
 
-Fecha às 19h com a bola rolando em Buenos Aires.
+Fecha às 16h, quando a bola rolar no Atlético-MG x Chapecoense.
 
 👉 https://quiz.mateuscaumo.com.br
 
@@ -35,6 +33,6 @@ Fecha às 19h com a bola rolando em Buenos Aires.
 
 Bilhete registrado ✅
 
-Guarda o número que veio na mensagem. Conferimos tudo depois do Flamengo x Del Valle (quinta 21h30) e avisamos aqui quem cravou os 8.
+Guarda o número que veio na mensagem. Conferimos tudo depois de São Paulo x Inter (sábado 21h) e avisamos aqui quem cravou os 10.
 
 Boa sorte 🍀

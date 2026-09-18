@@ -1,6 +1,6 @@
-# Bolão da Libertadores — 8 palpites da rodada, R$ 500 pra quem cravar
+# Bolão do Caumo — palpites da rodada, R$ 500 pra quem cravar
 
-Página mobile-first: landing (oferta, jogos da rodada, como funciona, aviso) → 8 palpites, dois por jogo das quartas → bilhete com número → botão fixo que abre o WhatsApp com o bilhete pronto pra registrar.
+Página mobile-first: landing (hero, oferta, como funciona, aviso) → palpites, dois por jogo da rodada → bilhete com número → botão fixo que abre o WhatsApp com o número do bilhete pra registrar. Rodada atual: Brasileirão 2026, 28ª rodada, jogos de sábado 19/09 (10 palpites). A versão da Libertadores está na tag `liberta-quartas-2026`.
 
 Não tem resposta certa na hora. O afiliado recebe o bilhete no WhatsApp, confere depois do jogo e paga o prêmio conforme a faixa de acertos.
 
@@ -14,8 +14,10 @@ Tudo que muda entre jogos/afiliados está em [`app/config.js`](app/config.js):
 | --- | --- |
 | `whatsappNumero` | Número que recebe o bilhete, só dígitos com DDI+DDD (`5511999999999`). **Está com placeholder.** |
 | `whatsappMensagem` | Texto pré-preenchido. Aceita `{rodada}`, `{codigo}`, `{palpites}` (lista numerada com jogo, mercado e escolha). |
+| `planilhaUrl` | URL do app da web do Apps Script (`apps-script.gs`). Com ela, cada bilhete e cada clique no WhatsApp vão pra planilha. Vazio = não grava. |
+| `seo` | Título e descrição da página. |
 | `oferta` | `valor` e `regra` do prêmio (bloco dourado da landing e rodapé do bilhete). |
-| `rodada` | `nome`, `encerramento` (ISO com fuso, liga o contador) e `jogos` (casa, fora, quando). |
+| `rodada` | `id` (vai em todo evento do GA4), `nome`, `encerramento` (ISO com fuso, liga o contador) e `jogos` (casa, fora, quando, escudos). |
 | `marquee` | Itens da faixa que roda no topo. |
 | `gaId` | Google Analytics 4 (`G-XXXXXXXXXX`). Vazio = não carrega. |
 | `pixelId` | Meta Pixel. Vazio = não carrega. |
@@ -28,23 +30,23 @@ Tudo que muda entre jogos/afiliados está em [`app/config.js`](app/config.js):
 ## Trocar de rodada
 
 1. `rodada.nome`, `rodada.encerramento` e a lista `rodada.jogos`.
-2. Reescrever os 5 `palpites` apontando o `jogo` certo (mercados sugeridos: resultado, escanteios, ambas marcam, total de gols, cartão vermelho, gol no 1º tempo; e um da rodada inteira, tipo "quantos brasileiros passam").
-3. Conferir `landing.titulo`, `oferta` e as linhas do `aviso`.
+2. Reescrever os `palpites` apontando o `jogo` certo (mercados sugeridos: resultado, escanteios, ambas marcam, total de gols, cartão vermelho, gol no 1º tempo). Baixar os escudos novos pra `public/escudos/`.
+3. Conferir `rodada.id`, `seo`, `marquee`, `landing`, `oferta`, `bilhete.slipTitulo`, as linhas do `aviso` e o `disparo.md`.
 
 ## Código do bilhete
 
-Gerado no navegador, 6 caracteres sem 0/O/1/I. Não é único de verdade (não tem servidor), serve pra referência na conversa. Se precisar de unicidade, o caminho é salvar o bilhete numa planilha via Apps Script antes de abrir o WhatsApp (igual ao Placar Certo).
+Gerado no navegador, 6 caracteres sem 0/O/1/I. Vai na mensagem do WhatsApp (`#CODIGO`) e, com `planilhaUrl` preenchida, na planilha junto com os palpites. Quem atende procura o código na planilha pra ver o bilhete. Não tem trava de duplicidade.
 
 ## Métricas (Google Analytics 4)
 
 Preencha `gaId` no `config.js` com o ID de medição (`G-XXXXXXXXXX`). Sem isso nada é enviado.
 
-Eventos que a página dispara (além do `page_view` automático):
+Eventos que a página dispara (além do `page_view` automático). Todos levam o parâmetro `rodada` (`rodada.id`), pra separar uma rodada da outra no mesmo painel:
 
 | Evento | Quando | Parâmetros |
 | --- | --- | --- |
 | `cta_start` | clicou em "Fazer meus palpites" | — |
-| `palpite` | respondeu um palpite | `etapa` (1..8), `jogo`, `mercado`, `escolha` |
+| `palpite` | respondeu um palpite | `etapa` (1..N), `jogo`, `mercado`, `escolha` |
 | `bilhete_view` | chegou no bilhete | `codigo` |
 | `whatsapp_click` | clicou em "Registrar no WhatsApp" | `codigo` |
 | `refazer` | clicou em "Refazer palpites" | `codigo` |
