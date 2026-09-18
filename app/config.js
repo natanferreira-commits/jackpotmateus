@@ -12,9 +12,13 @@ export const config = {
   // Variáveis: {rodada} {codigo} {palpites} (lista numerada, uma por linha)
   whatsappMensagem: "Quero validar meu palpite #{codigo}",
 
-  // Planilha de bilhetes: URL do app da web do Apps Script (ver apps-script.gs).
-  // "" = não grava nada. Com URL, cada bilhete gerado e cada clique no WhatsApp vira uma linha.
-  planilhaUrl: "",
+  // Supabase: guarda os bilhetes e os eventos do funil, e alimenta o /admin.
+  // Project Settings → API: "Project URL" e a chave "anon public". A anon é pública mesmo, pode ficar aqui.
+  // Vazio = não grava nada e o /admin fica desligado. Rode o supabase.sql ANTES de preencher.
+  supabase: {
+    url: "",
+    anonKey: "",
+  },
 
   marca: "Mateus Caumo",
 

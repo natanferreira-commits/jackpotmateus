@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { config } from "./config";
+import { enviarEvento, marcarWhatsapp, salvarBilhete } from "./lib/sb";
 
 // transforma *palavra* em destaque na cor
 function Highlight({ text }) {
@@ -37,8 +38,9 @@ function Arrow() {
   );
 }
 
-// Evento pro GA4 (e opcionalmente pro Meta Pixel)
+// Evento pro GA4, pro Supabase (funil do /admin) e opcionalmente pro Meta Pixel
 function track(evento, params = {}, pixel = null) {
+  enviarEvento(evento, params.etapa ?? null, params);
   try {
     if (typeof window !== "undefined" && typeof window.gtag === "function") {
       window.gtag("event", evento, { rodada: config.rodada.id || config.rodada.nome, ...params });
@@ -48,26 +50,6 @@ function track(evento, params = {}, pixel = null) {
     if (pixel && typeof window !== "undefined" && window.fbq) {
       window.fbq("track", pixel, params);
     }
-  } catch (e) {}
-}
-
-// Grava na planilha (Apps Script). text/plain + no-cors evita preflight de CORS.
-function gravarPlanilha(tipo, codigo, escolhas) {
-  const url = config.planilhaUrl;
-  if (!url || typeof window === "undefined") return;
-  try {
-    const palpites = config.palpites.map((pp, i) => ({
-      jogo: nomeJogo(pp),
-      mercado: pp.mercado,
-      escolha: escolhas ? pp.opcoes[escolhas[i]] : "",
-    }));
-    fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      keepalive: true,
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ tipo, codigo, rodada: config.rodada.id || config.rodada.nome, palpites }),
-    }).catch(() => {});
   } catch (e) {}
 }
 
@@ -482,13 +464,16 @@ function Bilhete({ escolhas, codigo, onRefazer, onHome }) {
 
   useEffect(() => {
     track("bilhete_view", { codigo }, "ViewContent");
-    gravarPlanilha("bilhete", codigo, escolhas);
+    salvarBilhete(
+      codigo,
+      config.palpites.map((pp, i) => ({ jogo: nomeJogo(pp), mercado: pp.mercado, escolha: pp.opcoes[escolhas[i]] }))
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codigo]);
 
   function registrar() {
     track("whatsapp_click", { codigo }, "Lead");
-    gravarPlanilha("whatsapp", codigo, escolhas);
+    marcarWhatsapp(codigo);
   }
 
   return (
@@ -558,6 +543,10 @@ export default function Home() {
   const [step, setStep] = useState("landing");
   const [escolhas, setEscolhas] = useState([]);
   const [codigo, setCodigo] = useState("");
+
+  useEffect(() => {
+    enviarEvento("page_view");
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);

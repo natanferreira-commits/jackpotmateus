@@ -14,7 +14,7 @@ Tudo que muda entre jogos/afiliados está em [`app/config.js`](app/config.js):
 | --- | --- |
 | `whatsappNumero` | Número que recebe o bilhete, só dígitos com DDI+DDD (`5511999999999`). **Está com placeholder.** |
 | `whatsappMensagem` | Texto pré-preenchido. Aceita `{rodada}`, `{codigo}`, `{palpites}` (lista numerada com jogo, mercado e escolha). |
-| `planilhaUrl` | URL do app da web do Apps Script (`apps-script.gs`). Com ela, cada bilhete e cada clique no WhatsApp vão pra planilha. Vazio = não grava. |
+| `supabase` | `url` e `anonKey` do projeto. Liga a gravação de bilhetes/eventos e o `/admin`. Vazio = desligado. |
 | `seo` | Título e descrição da página. |
 | `oferta` | `valor` e `regra` do prêmio (bloco dourado da landing e rodapé do bilhete). |
 | `rodada` | `id` (vai em todo evento do GA4), `nome`, `encerramento` (ISO com fuso, liga o contador) e `jogos` (casa, fora, quando, escudos). |
@@ -35,7 +35,17 @@ Tudo que muda entre jogos/afiliados está em [`app/config.js`](app/config.js):
 
 ## Código do bilhete
 
-Gerado no navegador, 6 caracteres sem 0/O/1/I. Vai na mensagem do WhatsApp (`#CODIGO`) e, com `planilhaUrl` preenchida, na planilha junto com os palpites. Quem atende procura o código na planilha pra ver o bilhete. Não tem trava de duplicidade.
+Gerado no navegador, 6 caracteres sem 0/O/1/I. Vai na mensagem do WhatsApp (`#CODIGO`) e, com o Supabase ligado, é salvo na tabela `bilhetes` junto com os palpites. Quem atende busca o código no `/admin`. Não tem trava de duplicidade por pessoa.
+
+## Admin e banco (Supabase)
+
+1. Criar um projeto no Supabase e rodar o `supabase.sql` inteiro no SQL Editor, trocando a senha na primeira seção.
+2. Em Project Settings → API, copiar a Project URL e a chave `anon public` pra `supabase` no `config.js`.
+3. O painel fica em `/admin` (senha = a do SQL): cliques no WhatsApp, visitantes, funil com perda por etapa, números por dia, lista de bilhetes com busca por código e gabarito pra ranquear acertos.
+
+A chave anon só consegue inserir eventos/bilhetes e chamar as funções do admin, que exigem a senha. Ninguém lê as tabelas pela API sem ela. Pra trocar a senha: `update admin_config set senha = 'nova' where id = 1;`.
+
+Ordem segura de mudança de schema: rodar o SQL primeiro, publicar o código depois.
 
 ## Métricas (Google Analytics 4)
 
