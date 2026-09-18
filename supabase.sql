@@ -174,6 +174,11 @@ $$;
 
 
 -- 7) Permissões: a chave pública só executa essas funções e insere nas duas tabelas
+-- (grants explícitos: funciona mesmo com "Automatically expose new tables" desligado)
+grant usage on schema public to anon, authenticated;
+grant insert on public.eventos, public.bilhetes to anon, authenticated;
+grant usage, select on sequence public.eventos_id_seq to anon, authenticated;
+revoke all on public.admin_config from anon, authenticated;
 revoke all on function public._admin_ok(text) from public, anon, authenticated;
 revoke all on function public.admin_resumo(text, text) from public;
 revoke all on function public.admin_bilhetes(text, text) from public;
