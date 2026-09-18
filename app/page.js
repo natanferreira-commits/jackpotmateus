@@ -266,13 +266,16 @@ function StickyCta({ children, hint }) {
 // ============= LANDING =============
 function Landing({ onStart }) {
   const { landing, oferta, rodada } = config;
-  const heroStyle = landing.heroImage ? { backgroundImage: `url(${landing.heroImage})` } : undefined;
+  const recorte = landing.heroModo === "recorte";
+  const fotoStyle = landing.heroImage ? { backgroundImage: `url(${landing.heroImage})` } : undefined;
+  const heroStyle = recorte ? undefined : fotoStyle;
   return (
     <div className="page">
       <Marquee />
       <Header right={rodada.nome} />
 
-      <section className={`hero-img${landing.heroImage ? " com-imagem" : ""}`} style={heroStyle}>
+      <section className={`hero-img${landing.heroImage ? " com-imagem" : ""}${recorte ? " recorte" : ""}`} style={heroStyle}>
+        {recorte && landing.heroImage && <div className="hero-foto" style={fotoStyle} aria-hidden="true" />}
         <Particulas />
         <div className="hero-top">
           {landing.label.split("•").map((l, i) => (

@@ -58,8 +58,11 @@ export const config = {
 
   // ---------- Landing ----------
   landing: {
-    // Imagem de fundo do hero (1080x1920, em /public). "" usa fundo liso.
+    // Imagem do hero, em /public. "" usa fundo liso.
     heroImage: "/hero.webp",
+    // "fundo"   = arte vertical 1080x1920 cobrindo o hero inteiro
+    // "recorte" = arte quadrada no meio do hero, com as bordas esfumadas
+    heroModo: "recorte",
     label: "Bolão do Caumo • Brasileirão",
     // a palavra entre *asteriscos* vira destaque na cor
     titulo: "*R$ 500* pra quem cravar a rodada",

@@ -829,3 +829,53 @@ h1 .hl {
     transition: none !important;
   }
 }
+
+/* ======================================================
+   HERO "recorte": arte quadrada no meio, bordas esfumadas
+   ====================================================== */
+.hero-img.recorte {
+  background: var(--bg);
+  overflow: hidden;
+}
+.hero-foto {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  height: 63%;
+  aspect-ratio: 1080 / 1030;
+  transform: translateX(-50%);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 16%, #000 78%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 9%, #000 91%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 16%, #000 78%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 9%, #000 91%, transparent 100%);
+  mask-composite: intersect;
+  animation: aparece 0.8s ease both;
+}
+@keyframes aparece {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* brilho verde de gramado atrás da foto */
+.hero-img.recorte::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: 130%;
+  height: 46%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(22, 120, 60, 0.28), rgba(22, 120, 60, 0) 68%);
+  pointer-events: none;
+}
+.hero-img.recorte .hero-top {
+  top: 3.5%;
+}
+.hero-img.recorte::after {
+  height: 30%;
+}
