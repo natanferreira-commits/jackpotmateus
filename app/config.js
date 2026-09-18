@@ -16,8 +16,8 @@ export const config = {
   // Project Settings → API: "Project URL" e a chave "anon public". A anon é pública mesmo, pode ficar aqui.
   // Vazio = não grava nada e o /admin fica desligado. Rode o supabase.sql ANTES de preencher.
   supabase: {
-    url: "",
-    anonKey: "",
+    url: "https://oucgyfssnqkczrzezrvc.supabase.co",
+    anonKey: "sb_publishable_bWA7Sj2RbadVCqtsP9CQwA_4rGH_Rr_",
   },
 
   marca: "Mateus Caumo",
