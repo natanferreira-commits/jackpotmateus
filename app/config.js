@@ -217,7 +217,7 @@ const jackpot = {
   },
   palpites: [],
 
-  marquee: ["Jackpot do Caumo", "Puxa a alavanca", "Acesso ao VIP", "Banca liberada", "Grátis", "Resgate no WhatsApp"],
+  marquee: ["Jackpot do Caumo", "Puxa a alavanca", "Ganhe giros grátis", "Acesso ao VIP", "Banca liberada", "Grátis", "Resgate no WhatsApp"],
 
   maquina: {
     // Letreiro em cima da máquina (antes / depois de cravar)
@@ -229,23 +229,39 @@ const jackpot = {
     ctaLabel: "Puxar a alavanca",
     ctaGirando: "Girando",
     ctaQuase: "Puxar de novo",
-    ctaHint: "Grátis. Um giro e o prêmio já sai.",
+    ctaHint: "Grátis. Puxa a alavanca e ganha giros até cravar.",
     quaseTitulo: "Quase! Faltou um Caumo",
-    quaseSub: "Você ainda tem um giro. Puxa de novo.",
+    quaseSub: "Você ainda tem giros grátis. Puxa de novo.",
+    // Estado intermediário: bônus de giros grátis (sai sempre no giro `giroBonus`, antes do prêmio)
+    letreiroBonus: "+3 Giros!",
+    bonusTitulo: "Bônus! +3 giros grátis",
+    bonusSub: "A sorte tá do seu lado. Continue puxando a alavanca.",
+    ctaBonus: "Preparando seus giros...",
+    // "{n}" e "{total}" são trocados pelo giro grátis atual e o total liberado no bônus
+    contadorLabel: "Giro grátis {n} de {total}",
     ganhouTitulo: "Cravou o jackpot",
     ganhouSub: "Fechando seu bilhete do prêmio",
     // Faixa que pisca embaixo dos rolos enquanto giram, criando expectativa
     faixaGirando: "🔥 Vem o Caumo dourado...",
-    // Símbolos dos rolos. O primeiro é o do jackpot: "MATEUS" renderiza a imagem em imagemSimbolo.
+    // Símbolos dos rolos. O primeiro é o do jackpot ("MATEUS" renderiza a imagem em imagemSimbolo).
+    // O terceiro (★) é o símbolo do bônus de giros grátis.
     simbolos: ["MATEUS", "BAR", "★", "$", "◆"],
     // Imagem do símbolo de jackpot (rosto dourado, em /public)
     imagemSimbolo: "/mateus-dourado.png",
-    // Em qual giro a máquina crava: 1 = ganha de primeira; 2 = o primeiro giro para em "quase" (dois Caumos) e o segundo crava.
-    giroVencedor: 1,
+    // Giro em que o bônus de giros grátis sempre sai (cria a sensação de generosidade antes do prêmio)
+    giroBonus: 1,
+    // Quantos giros grátis o bônus libera
+    bonusGiros: 3,
+    // Dentro dos giros grátis, o jackpot crava sorteado entre estes dois giros (contando desde o início,
+    // giroBonus incluso): o mínimo dá chance de cravar mais cedo, o máximo garante o prêmio no último giro
+    // grátis pra ninguém sair de mãos vazias depois de ganhar o bônus. Some giroBonus + bonusGiros = giroPremioMax.
+    giroPremioMin: 3,
+    giroPremioMax: 4,
     comoFunciona: [
       "Puxa a alavanca da máquina",
-      "Cravou os três Caumos dourados, registra o prêmio no WhatsApp",
-      "Recebe o acesso ao VIP e a banca",
+      "No primeiro giro já libera +3 giros grátis",
+      "Em um dos giros grátis os três Caumos dourados travam na linha",
+      "Registra o prêmio no WhatsApp e recebe o acesso ao VIP e a banca",
     ],
   },
 

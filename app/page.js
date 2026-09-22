@@ -595,29 +595,42 @@ function Maquina({ onWin }) {
   const { maquina, aviso } = config;
   const S = maquina.simbolos;
   const n = S.length;
-  // "parado" | "girando" | "quase" | "ganhou"
+  // "parado" | "girando" | "quase" | "bonus" | "ganhou"
   const [estado, setEstado] = useState("parado");
   const [giros, setGiros] = useState(0);
   const [puxada, setPuxada] = useState(false);
   const [rolos, setRolos] = useState(() => [1, 3, 4].map((pos) => ({ fase: "parado", pos: pos % n })));
   const timers = useRef([]).current;
+  // giro em que o jackpot crava dentro da janela de giros grátis, sorteado quando o bônus sai
+  const giroPremio = useRef(null);
 
   useEffect(() => () => timers.forEach(clearTimeout), [timers]);
   const depois = (fn, ms) => timers.push(setTimeout(fn, ms));
 
+  function sortearGiroPremio() {
+    const min = Math.max(1, maquina.giroPremioMin || 1);
+    const max = Math.max(min, maquina.giroPremioMax || min);
+    return min + Math.floor(Math.random() * (max - min + 1));
+  }
+
   function puxar() {
     if (estado !== "parado" && estado !== "quase") return;
     const g = giros + 1;
-    const vence = g >= Math.max(1, maquina.giroVencedor || 1);
+
+    // giro do bônus: sempre libera os giros grátis e sorteia em qual deles o jackpot crava
+    const ehBonus = g === Math.max(1, maquina.giroBonus || 1);
+    if (ehBonus) giroPremio.current = sortearGiroPremio();
+    const vence = !ehBonus && g >= (giroPremio.current || sortearGiroPremio());
+
     setGiros(g);
     setPuxada(true);
     depois(() => setPuxada(false), 700);
-    track(g === 1 ? "cta_start" : "giro", { etapa: g });
+    track(ehBonus ? "cta_start" : vence ? "giro_premio" : "giro", { etapa: g });
     setEstado("girando");
     setRolos((r) => r.map((x) => ({ ...x, fase: "girando" })));
 
-    // parada: jackpot = 3 símbolos do topo; "quase" = dois setes e o terceiro cai no vizinho
-    const alvo = vence ? [0, 0, 0] : [0, 0, 1];
+    // parada: jackpot = 3 Caumos dourados; bônus = 3 estrelas; "quase" = dois Caumos e o terceiro cai no vizinho
+    const alvo = vence ? [0, 0, 0] : ehBonus ? [2, 2, 2] : [0, 0, 1];
     alvo.forEach((pos, i) => {
       depois(() => {
         setRolos((r) => r.map((x, j) => (j === i ? { fase: "parando", pos } : x)));
@@ -629,6 +642,10 @@ function Maquina({ onWin }) {
         setEstado("ganhou");
         track("jackpot", { etapa: g });
         depois(() => onWin(g), 1700);
+      } else if (ehBonus) {
+        setEstado("bonus");
+        track("bonus", { etapa: g, giros: maquina.bonusGiros });
+        depois(() => setEstado("parado"), 1900);
       } else {
         setEstado("quase");
         track("quase", { etapa: g });
@@ -639,14 +656,17 @@ function Maquina({ onWin }) {
   const girando = estado === "girando";
   const ganhou = estado === "ganhou";
   const quase = estado === "quase";
-  const cta = girando ? maquina.ctaGirando : quase ? maquina.ctaQuase : maquina.ctaLabel;
+  const bonus = estado === "bonus";
+  const cta = girando ? maquina.ctaGirando : bonus ? maquina.ctaBonus : quase ? maquina.ctaQuase : maquina.ctaLabel;
+  const giroBonusN = Math.max(1, maquina.giroBonus || 1);
+  const giroGratisAtual = giros >= giroBonusN ? Math.min(giros - giroBonusN + 1, maquina.bonusGiros || 0) : 0;
 
   return (
-    <div className={`page maq-screen${ganhou ? " ganhou" : ""}${girando ? " girando" : ""}`}>
+    <div className={`page maq-screen${ganhou ? " ganhou" : ""}${girando ? " girando" : ""}${bonus ? " bonus" : ""}`}>
       <div className="maq-fundo" aria-hidden="true">
         <div className="maq-brilho" />
       </div>
-      {ganhou && <div className="maq-flash" aria-hidden="true" />}
+      {(ganhou || bonus) && <div className={`maq-flash${bonus ? " bonus" : ""}`} aria-hidden="true" />}
       <Marquee />
       <Header right={config.rodada.nome} />
       {ganhou && <Confete />}
@@ -655,16 +675,27 @@ function Maquina({ onWin }) {
         <section className="hero compacto maq-copy">
           <span className="label">{maquina.label}</span>
           <h1 key={estado}>
-            {ganhou ? maquina.ganhouTitulo : quase ? maquina.quaseTitulo : <Highlight text={maquina.titulo} />}
+            {ganhou ? maquina.ganhouTitulo : bonus ? maquina.bonusTitulo : quase ? maquina.quaseTitulo : <Highlight text={maquina.titulo} />}
           </h1>
-          <p className="lead">{ganhou ? maquina.ganhouSub : quase ? maquina.quaseSub : maquina.subtitulo}</p>
+          <p className="lead">
+            {ganhou ? maquina.ganhouSub : bonus ? maquina.bonusSub : quase ? maquina.quaseSub : maquina.subtitulo}
+          </p>
+          {!ganhou && !bonus && giroGratisAtual > 0 && (
+            <p className="maq-contador">
+              {(maquina.contadorLabel || "Giro grátis {n} de {total}")
+                .replace("{n}", String(giroGratisAtual))
+                .replace("{total}", String(maquina.bonusGiros || 0))}
+            </p>
+          )}
         </section>
 
-        <section className={`maq${girando ? " girando" : ""}${ganhou ? " ganhou" : ""}${quase ? " quase" : ""}`}>
+        <section className={`maq${girando ? " girando" : ""}${ganhou ? " ganhou" : ""}${quase ? " quase" : ""}${bonus ? " bonus" : ""}`}>
           <div className="maq-cab">
             <div className="maq-topo">
               <Luzes />
-              <div className="maq-letreiro">{ganhou ? maquina.letreiroGanhou : maquina.letreiro}</div>
+              <div className="maq-letreiro">
+                {ganhou ? maquina.letreiroGanhou : bonus ? maquina.letreiroBonus || maquina.letreiro : maquina.letreiro}
+              </div>
               <Luzes />
             </div>
 
@@ -681,14 +712,14 @@ function Maquina({ onWin }) {
               <span className="maq-ficha" />
               <span className="maq-ficha" />
               <span className="maq-ficha" />
-              <button className="maq-botao" onClick={puxar} disabled={girando || ganhou} aria-label={cta} tabIndex={-1} />
+              <button className="maq-botao" onClick={puxar} disabled={girando || ganhou || bonus} aria-label={cta} tabIndex={-1} />
             </div>
           </div>
 
           <button
             className={`alavanca${puxada ? " puxada" : ""}`}
             onClick={puxar}
-            disabled={girando || ganhou}
+            disabled={girando || ganhou || bonus}
             aria-label={cta}
           >
             <span className="alavanca-haste" />
@@ -721,7 +752,7 @@ function Maquina({ onWin }) {
       </main>
 
       <StickyCta hint={<Countdown fallback={maquina.ctaHint} />}>
-        <button className="btn" onClick={puxar} disabled={girando || ganhou}>
+        <button className="btn" onClick={puxar} disabled={girando || ganhou || bonus}>
           {cta} <Arrow />
         </button>
       </StickyCta>

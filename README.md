@@ -13,16 +13,18 @@ Tudo fica na seção `jackpot` no fim do `config.js`. Ela sobrescreve `seo`, `ma
 | --- | --- |
 | `maquina.simbolos` | Símbolos dos rolos. O primeiro é o do jackpot (três dele na linha do meio = cravou). `"MATEUS"` é especial: renderiza a imagem de `maquina.imagemSimbolo` em vez de texto. |
 | `maquina.imagemSimbolo` | Imagem do símbolo de jackpot (rosto dourado do Mateus), em `/public`. Aparece nos rolos e nos três símbolos do bilhete de prêmio. |
-| `maquina.giroVencedor` | `1` crava de primeira. `2` faz o primeiro giro parar em "quase" (dois Caumos dourados) e o segundo cravar. |
-| `maquina.letreiro` / `letreiroGanhou` | Texto do letreiro em cima da máquina, antes e depois de cravar. |
-| `maquina.titulo`, `subtitulo`, `ctaLabel`, `ctaHint`, `comoFunciona` | Copy da tela da máquina. |
+| `maquina.giroBonus` | Giro em que o bônus de giros grátis sempre sai (o primeiro giro nunca crava o jackpot nem fica "quase" — libera `bonusGiros` giros grátis). |
+| `maquina.bonusGiros` | Quantos giros grátis o bônus libera. |
+| `maquina.giroPremioMin` / `giroPremioMax` | Dentro dos giros grátis, o jackpot crava sorteado entre esses dois giros (contando desde o início, `giroBonus` incluso). No `giroPremioMax` o prêmio é garantido, pra ninguém ficar de mãos vazias depois de ganhar o bônus. Mantenha `giroBonus + bonusGiros === giroPremioMax`. |
+| `maquina.letreiro` / `letreiroGanhou` / `letreiroBonus` | Texto do letreiro em cima da máquina: normal, ao cravar o jackpot e ao ganhar o bônus de giros. |
+| `maquina.titulo`, `subtitulo`, `bonusTitulo`, `bonusSub`, `ctaBonus`, `contadorLabel`, `ctaLabel`, `ctaHint`, `comoFunciona` | Copy da tela da máquina. |
 | `bilhete.premio` | Linhas do bilhete do prêmio (`item` / `valor`). `premioNome` é o que vai gravado no Supabase. |
 | `rodada.id` | Vai em todo evento (GA4 e Supabase). Troque a cada ação nova pra separar no `/admin`. |
 | `rodada.encerramento`, `fechaLabel`, `encerradoLabel` | Contador no rodapé fixo. |
 
-A máquina sempre para no resultado definido pelo `giroVencedor`: não existe sorteio, todo mundo que puxa crava.
+Não existe sorteio de "se" alguém crava — todo mundo que puxa a alavanca até o fim crava. O que é sorteado (uma vez, no giro do bônus) é **em qual giro grátis** o jackpot vai parar, entre `giroPremioMin` e `giroPremioMax`. Isso evita o efeito "ganhei na primeira puxada, é óbvio que tá no chip" sem tirar a garantia do prêmio: giro 1 sempre libera 3 giros grátis, e o jackpot crava aleatoriamente no 2º ou 3º desses giros (forçado no último, se ainda não tiver caído antes).
 
-Eventos: `cta_start` (primeira puxada), `giro` (puxadas seguintes), `quase`, `jackpot`, `bilhete_view`, `whatsapp_click`. O bilhete é salvo na mesma tabela `bilhetes`, com o prêmio e o número de giros no campo `palpites`, então o `/admin` funciona sem mudar o banco.
+Eventos: `cta_start` (primeira puxada, sempre o bônus), `giro` (puxadas que caem em "quase"), `giro_premio` (a puxada que crava), `bonus` (giro do bônus), `quase`, `jackpot`, `bilhete_view`, `whatsapp_click`. O bilhete é salvo na mesma tabela `bilhetes`, com o prêmio e o número de giros no campo `palpites`, então o `/admin` funciona sem mudar o banco.
 
 ## Modo bolão
 
