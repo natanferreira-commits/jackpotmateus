@@ -252,8 +252,8 @@ const jackpot = {
   bilhete: {
     slipTitulo: "Jackpot do Caumo",
     label: "Seu prêmio",
-    titulo: "Registra no WhatsApp pra resgatar",
-    subtitulo: "Sem registro o prêmio não é liberado. Aperta o botão que a mensagem já vai com o número do seu bilhete.",
+    titulo: "Resgate seu prêmio no WhatsApp!",
+    subtitulo: "Aperta o botão abaixo: a mensagem já vai pronta, com o número do seu bilhete.",
     ctaLabel: "Resgatar no WhatsApp",
     ctaHint: "Abre o WhatsApp com o número do seu prêmio",
     refazerLabel: "Voltar pra máquina",
