@@ -550,6 +550,18 @@ const PARADAS = [750, 1450, 2350];
 // Duração da desaceleração do rolo (ms), igual ao transition no CSS
 const FREIO = 950;
 
+// Sorteia, por visitante, em qual giro o prêmio cai e em qual sai o bônus de giros.
+// O bônus vem sempre antes do prêmio e antes dos giros iniciais acabarem, pra ninguém travar sem giro.
+function sortearRoteiro({ girosIniciais, bonusGiros, premioMin, premioMax }) {
+  const ini = Math.max(1, girosIniciais || 1);
+  const min = Math.max(1, premioMin || 1);
+  const max = Math.max(min, premioMax || min);
+  const premio = min + Math.floor(Math.random() * (max - min + 1));
+  const tetoBonus = Math.min(premio - 1, ini);
+  const bonus = bonusGiros > 0 && tetoBonus >= 1 ? 1 + Math.floor(Math.random() * tetoBonus) : 0;
+  return { premio, bonus };
+}
+
 function Luzes({ n = 14 }) {
   return (
     <div className="maq-luzes" aria-hidden="true">
@@ -601,36 +613,30 @@ function Maquina({ onWin }) {
   const [puxada, setPuxada] = useState(false);
   const [rolos, setRolos] = useState(() => [1, 3, 4].map((pos) => ({ fase: "parado", pos: pos % n })));
   const timers = useRef([]).current;
-  // giro em que o jackpot crava dentro da janela de giros grátis, sorteado quando o bônus sai
-  const giroPremio = useRef(null);
+  const [roteiro] = useState(() => sortearRoteiro(maquina));
+  const [bonusSaiu, setBonusSaiu] = useState(false);
 
   useEffect(() => () => timers.forEach(clearTimeout), [timers]);
   const depois = (fn, ms) => timers.push(setTimeout(fn, ms));
 
-  function sortearGiroPremio() {
-    const min = Math.max(1, maquina.giroPremioMin || 1);
-    const max = Math.max(min, maquina.giroPremioMax || min);
-    return min + Math.floor(Math.random() * (max - min + 1));
-  }
+  const restantes = Math.max(1, maquina.girosIniciais || 1) + (bonusSaiu ? maquina.bonusGiros || 0 : 0) - giros;
 
   function puxar() {
     if (estado !== "parado" && estado !== "quase") return;
     const g = giros + 1;
-
-    // giro do bônus: sempre libera os giros grátis e sorteia em qual deles o jackpot crava
-    const ehBonus = g === Math.max(1, maquina.giroBonus || 1);
-    if (ehBonus) giroPremio.current = sortearGiroPremio();
-    const vence = !ehBonus && g >= (giroPremio.current || sortearGiroPremio());
+    const ehBonus = !bonusSaiu && g === roteiro.bonus;
+    // crava no giro sorteado, ou no último giro que sobrou, o que vier primeiro
+    const vence = !ehBonus && (g >= roteiro.premio || restantes <= 1);
 
     setGiros(g);
     setPuxada(true);
     depois(() => setPuxada(false), 700);
-    track(ehBonus ? "cta_start" : vence ? "giro_premio" : "giro", { etapa: g });
+    track(g === 1 ? "cta_start" : vence ? "giro_premio" : "giro", { etapa: g });
     setEstado("girando");
     setRolos((r) => r.map((x) => ({ ...x, fase: "girando" })));
 
-    // parada: jackpot = 3 Caumos dourados; bônus = 3 estrelas; "quase" = dois Caumos e o terceiro cai no vizinho
-    const alvo = vence ? [0, 0, 0] : ehBonus ? [2, 2, 2] : [0, 0, 1];
+    // parada: jackpot = 3 Caumos dourados; bônus = 3 estrelas; "quase" = dois Caumos e o terceiro cai num vizinho
+    const alvo = vence ? [0, 0, 0] : ehBonus ? [2, 2, 2] : [0, 0, Math.random() < 0.5 ? 1 : n - 1];
     alvo.forEach((pos, i) => {
       depois(() => {
         setRolos((r) => r.map((x, j) => (j === i ? { fase: "parando", pos } : x)));
@@ -644,6 +650,7 @@ function Maquina({ onWin }) {
         depois(() => onWin(g), 1700);
       } else if (ehBonus) {
         setEstado("bonus");
+        setBonusSaiu(true);
         track("bonus", { etapa: g, giros: maquina.bonusGiros });
         depois(() => setEstado("parado"), 1900);
       } else {
@@ -658,8 +665,8 @@ function Maquina({ onWin }) {
   const quase = estado === "quase";
   const bonus = estado === "bonus";
   const cta = girando ? maquina.ctaGirando : bonus ? maquina.ctaBonus : quase ? maquina.ctaQuase : maquina.ctaLabel;
-  const giroBonusN = Math.max(1, maquina.giroBonus || 1);
-  const giroGratisAtual = giros >= giroBonusN ? Math.min(giros - giroBonusN + 1, maquina.bonusGiros || 0) : 0;
+  const contador =
+    restantes === 1 ? maquina.contadorUm || "Último giro" : (maquina.contadorLabel || "Você tem {n} giros").replace("{n}", String(restantes));
 
   return (
     <div className={`page maq-screen${ganhou ? " ganhou" : ""}${girando ? " girando" : ""}${bonus ? " bonus" : ""}`}>
@@ -680,13 +687,7 @@ function Maquina({ onWin }) {
           <p className="lead">
             {ganhou ? maquina.ganhouSub : bonus ? maquina.bonusSub : quase ? maquina.quaseSub : maquina.subtitulo}
           </p>
-          {!ganhou && !bonus && giroGratisAtual > 0 && (
-            <p className="maq-contador">
-              {(maquina.contadorLabel || "Giro grátis {n} de {total}")
-                .replace("{n}", String(giroGratisAtual))
-                .replace("{total}", String(maquina.bonusGiros || 0))}
-            </p>
-          )}
+          {!ganhou && !bonus && !girando && <p className="maq-contador">{contador}</p>}
         </section>
 
         <section className={`maq${girando ? " girando" : ""}${ganhou ? " ganhou" : ""}${quase ? " quase" : ""}${bonus ? " bonus" : ""}`}>

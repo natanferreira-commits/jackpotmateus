@@ -237,8 +237,9 @@ const jackpot = {
     bonusTitulo: "Bônus! +3 giros grátis",
     bonusSub: "A sorte tá do seu lado. Continue puxando a alavanca.",
     ctaBonus: "Preparando seus giros...",
-    // "{n}" e "{total}" são trocados pelo giro grátis atual e o total liberado no bônus
-    contadorLabel: "Giro grátis {n} de {total}",
+    // Giros que o visitante ainda tem. "{n}" é o número; contadorUm é a versão no singular.
+    contadorLabel: "Você tem {n} giros",
+    contadorUm: "Último giro",
     ganhouTitulo: "Cravou o jackpot",
     ganhouSub: "Fechando seu bilhete do prêmio",
     // Faixa que pisca embaixo dos rolos enquanto giram, criando expectativa
@@ -248,20 +249,18 @@ const jackpot = {
     simbolos: ["MATEUS", "BAR", "★", "$", "◆"],
     // Imagem do símbolo de jackpot (rosto dourado, em /public)
     imagemSimbolo: "/mateus-dourado.png",
-    // Giro em que o bônus de giros grátis sempre sai (cria a sensação de generosidade antes do prêmio)
-    giroBonus: 1,
-    // Quantos giros grátis o bônus libera
+    // Roteiro sorteado por visitante, na primeira puxada:
+    // - o jackpot crava num giro entre premioMin e premioMax (nunca no primeiro, pra não parecer chip viciado)
+    // - antes dele, um giro sorteado solta o bônus de +bonusGiros (três estrelas); os outros param em "quase"
+    // Quem entra tem girosIniciais giros; o bônus sempre cai antes deles acabarem, e o prêmio antes de zerar.
+    girosIniciais: 2,
     bonusGiros: 3,
-    // Dentro dos giros grátis, o jackpot crava sorteado entre estes dois giros (contando desde o início,
-    // giroBonus incluso): o mínimo dá chance de cravar mais cedo, o máximo garante o prêmio no último giro
-    // grátis pra ninguém sair de mãos vazias depois de ganhar o bônus. Some giroBonus + bonusGiros = giroPremioMax.
-    giroPremioMin: 3,
-    giroPremioMax: 4,
+    premioMin: 2,
+    premioMax: 4,
     comoFunciona: [
-      "Puxa a alavanca da máquina",
-      "No primeiro giro já libera +3 giros grátis",
-      "Em um dos giros grátis os três Caumos dourados travam na linha",
-      "Registra o prêmio no WhatsApp e recebe o acesso ao VIP e a banca",
+      "Puxa a alavanca: cada giro pode soltar giros extras ou os três Caumos dourados",
+      "Cravou os três Caumos, registra o prêmio no WhatsApp",
+      "Recebe o acesso ao VIP e a banca",
     ],
   },
 
