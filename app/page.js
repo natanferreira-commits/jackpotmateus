@@ -642,7 +642,11 @@ function Maquina({ onWin }) {
   const cta = girando ? maquina.ctaGirando : quase ? maquina.ctaQuase : maquina.ctaLabel;
 
   return (
-    <div className={`page maq-screen${ganhou ? " ganhou" : ""}`}>
+    <div className={`page maq-screen${ganhou ? " ganhou" : ""}${girando ? " girando" : ""}`}>
+      <div className="maq-fundo" aria-hidden="true">
+        <div className="maq-brilho" />
+      </div>
+      {ganhou && <div className="maq-flash" aria-hidden="true" />}
       <Marquee />
       <Header right={config.rodada.nome} />
       {ganhou && <Confete />}
@@ -690,6 +694,12 @@ function Maquina({ onWin }) {
             <span className="alavanca-haste" />
             <span className="alavanca-bola" />
           </button>
+
+          {girando && (
+            <div className="maq-faixa" aria-hidden="true">
+              <span>{maquina.faixaGirando}</span>
+            </div>
+          )}
         </section>
 
         <p className="lead maq-lead">{config.oferta.valor} {config.oferta.regra}.</p>

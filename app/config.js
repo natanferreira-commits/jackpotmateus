@@ -234,6 +234,8 @@ const jackpot = {
     quaseSub: "Você ainda tem um giro. Puxa de novo.",
     ganhouTitulo: "Cravou o jackpot",
     ganhouSub: "Fechando seu bilhete do prêmio",
+    // Faixa que pisca embaixo dos rolos enquanto giram, criando expectativa
+    faixaGirando: "🔥 Vem o Caumo dourado...",
     // Símbolos dos rolos. O primeiro é o do jackpot: "MATEUS" renderiza a imagem em imagemSimbolo.
     simbolos: ["MATEUS", "BAR", "★", "$", "◆"],
     // Imagem do símbolo de jackpot (rosto dourado, em /public)
