@@ -574,11 +574,18 @@ function Rolo({ simbolos, fase, pos, atraso }) {
   return (
     <div className={`rolo ${fase}`}>
       <div className="rolo-fita" style={style}>
-        {fita.map((s, i) => (
-          <span key={i} className={`sym s-${s === simbolos[0] ? "top" : i % n}`}>
-            {s}
-          </span>
-        ))}
+        {fita.map((s, i) => {
+          const top = s === simbolos[0];
+          return (
+            <span key={i} className={`sym s-${top ? "top" : i % n}`}>
+              {top && config.maquina.imagemSimbolo ? (
+                <img src={config.maquina.imagemSimbolo} alt="" className="sym-img" draggable="false" />
+              ) : (
+                s
+              )}
+            </span>
+          );
+        })}
       </div>
     </div>
   );
@@ -754,9 +761,19 @@ function Premio({ codigo, giros, onVoltar, onHome }) {
             </div>
           </div>
           <div className="slip-jackpot" aria-hidden="true">
-            <span>7</span>
-            <span>7</span>
-            <span>7</span>
+            {config.maquina.imagemSimbolo ? (
+              <>
+                <span><img src={config.maquina.imagemSimbolo} alt="" draggable="false" /></span>
+                <span><img src={config.maquina.imagemSimbolo} alt="" draggable="false" /></span>
+                <span><img src={config.maquina.imagemSimbolo} alt="" draggable="false" /></span>
+              </>
+            ) : (
+              <>
+                <span>7</span>
+                <span>7</span>
+                <span>7</span>
+              </>
+            )}
           </div>
           <ul className="slip-lista">
             {bilhete.premio.map((p, i) => (

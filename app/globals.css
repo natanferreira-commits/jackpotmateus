@@ -1042,6 +1042,14 @@ h1 .hl {
   color: var(--red);
   text-shadow: 0 2px 0 #7a0a1c;
 }
+.sym-img {
+  width: calc(var(--sym) - 14px);
+  height: calc(var(--sym) - 14px);
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+  user-select: none;
+  pointer-events: none;
+}
 .sym.s-1 { font-size: 20px; letter-spacing: 0.08em; }
 .sym.s-2 { color: #d9a531; font-size: 40px; }
 .sym.s-3 { color: #1e8a4c; font-size: 40px; }
@@ -1169,7 +1177,7 @@ h1 .hl {
   box-shadow: 0 0 0 2px rgba(255, 122, 122, 0.7);
 }
 
-/* bilhete do prêmio: os três setes */
+/* bilhete do prêmio: os três Caumos dourados */
 .slip-jackpot {
   display: flex;
   justify-content: center;
@@ -1190,6 +1198,11 @@ h1 .hl {
   font-weight: 900;
   text-shadow: 0 2px 0 #7a0a1c;
   animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.slip-jackpot span img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
 }
 .slip-jackpot span:nth-child(2) { animation-delay: 0.12s; }
 .slip-jackpot span:nth-child(3) { animation-delay: 0.24s; }

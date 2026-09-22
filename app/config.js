@@ -224,23 +224,25 @@ const jackpot = {
     letreiro: "Jackpot",
     letreiroGanhou: "Jackpot!",
     label: "Jackpot do Caumo",
-    titulo: "Puxa a alavanca e *crava o jackpot*",
-    subtitulo: "Três setes na linha liberam acesso ao VIP do Caumo e uma banca pra começar. Grátis, sem depósito.",
+    titulo: "Puxa a alavanca e *crava o Caumo dourado*",
+    subtitulo: "Três Caumos dourados na linha liberam acesso ao VIP e uma banca pra começar. Grátis, sem depósito.",
     ctaLabel: "Puxar a alavanca",
     ctaGirando: "Girando",
     ctaQuase: "Puxar de novo",
     ctaHint: "Grátis. Um giro e o prêmio já sai.",
-    quaseTitulo: "Quase! Faltou um sete",
+    quaseTitulo: "Quase! Faltou um Caumo",
     quaseSub: "Você ainda tem um giro. Puxa de novo.",
     ganhouTitulo: "Cravou o jackpot",
     ganhouSub: "Fechando seu bilhete do prêmio",
-    // Símbolos dos rolos. O primeiro é o do jackpot.
-    simbolos: ["7", "BAR", "★", "$", "◆"],
-    // Em qual giro a máquina crava: 1 = ganha de primeira; 2 = o primeiro giro para em "quase" (dois setes) e o segundo crava.
+    // Símbolos dos rolos. O primeiro é o do jackpot: "MATEUS" renderiza a imagem em imagemSimbolo.
+    simbolos: ["MATEUS", "BAR", "★", "$", "◆"],
+    // Imagem do símbolo de jackpot (rosto dourado, em /public)
+    imagemSimbolo: "/mateus-dourado.png",
+    // Em qual giro a máquina crava: 1 = ganha de primeira; 2 = o primeiro giro para em "quase" (dois Caumos) e o segundo crava.
     giroVencedor: 1,
     comoFunciona: [
       "Puxa a alavanca da máquina",
-      "Cravou os três setes, registra o prêmio no WhatsApp",
+      "Cravou os três Caumos dourados, registra o prêmio no WhatsApp",
       "Recebe o acesso ao VIP e a banca",
     ],
   },

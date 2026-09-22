@@ -2,7 +2,7 @@
 
 Página mobile-first com dois modos, escolhidos por `modo` no [`app/config.js`](app/config.js):
 
-- **`jackpot`** (ativo): máquina caça-níquel na primeira tela → puxa a alavanca → três setes → bilhete do prêmio (acesso ao VIP + banca) → botão fixo que abre o WhatsApp com o número do bilhete pra resgatar.
+- **`jackpot`** (ativo): máquina caça-níquel com o rosto dourado do Mateus na primeira tela → puxa a alavanca → três Caumos dourados na linha → bilhete do prêmio (acesso ao VIP + banca) → botão fixo que abre o WhatsApp com o número do bilhete pra resgatar.
 - **`bolao`**: landing (hero, oferta, como funciona, aviso) → palpites, dois por jogo da rodada → bilhete com número → registro no WhatsApp. Última rodada: Brasileirão 2026, 28ª rodada, sábado 19/09 (10 palpites). A versão da Libertadores está na tag `liberta-quartas-2026`.
 
 ## Modo jackpot
@@ -11,8 +11,9 @@ Tudo fica na seção `jackpot` no fim do `config.js`. Ela sobrescreve `seo`, `ma
 
 | Campo | O que é |
 | --- | --- |
-| `maquina.simbolos` | Símbolos dos rolos. O primeiro é o do jackpot (três dele na linha do meio = cravou). |
-| `maquina.giroVencedor` | `1` crava de primeira. `2` faz o primeiro giro parar em "quase" (dois setes) e o segundo cravar. |
+| `maquina.simbolos` | Símbolos dos rolos. O primeiro é o do jackpot (três dele na linha do meio = cravou). `"MATEUS"` é especial: renderiza a imagem de `maquina.imagemSimbolo` em vez de texto. |
+| `maquina.imagemSimbolo` | Imagem do símbolo de jackpot (rosto dourado do Mateus), em `/public`. Aparece nos rolos e nos três símbolos do bilhete de prêmio. |
+| `maquina.giroVencedor` | `1` crava de primeira. `2` faz o primeiro giro parar em "quase" (dois Caumos dourados) e o segundo cravar. |
 | `maquina.letreiro` / `letreiroGanhou` | Texto do letreiro em cima da máquina, antes e depois de cravar. |
 | `maquina.titulo`, `subtitulo`, `ctaLabel`, `ctaHint`, `comoFunciona` | Copy da tela da máquina. |
 | `bilhete.premio` | Linhas do bilhete do prêmio (`item` / `valor`). `premioNome` é o que vai gravado no Supabase. |
