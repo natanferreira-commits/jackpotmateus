@@ -1,38 +1,43 @@
-# Mensagens de disparo — Bolão do Caumo (Brasileirão, sábado 19/09)
+# Mensagens de disparo — Jackpot do Caumo
 
-Quem fala é o Mateus, em primeira pessoa. Palpites fecham sábado 19/09 às 16h.
+Quem fala é o Mateus, em primeira pessoa. A máquina fecha domingo 27/09 às 23h59.
 
-## 1. Disparo principal (sexta 18/09 à noite ou sábado de manhã)
+## 1. Disparo principal
 
-📢 AVISO - R$500 no PIX
+📢 JACKPOT DO CAUMO
 
-Sábado de Brasileirão: Atlético-MG, Botafogo, Santos, Vasco, São Paulo e Inter em campo.
+Essa semana a rodada tá fraca, então mudei o jogo: montei uma máquina de jackpot pra vocês.
 
-Montei mais um bolão: você manda os palpites e monta um bilhete.
-Cravou os 10? → R$ 500 no Pix.
+Puxou a alavanca e cravou os três setes? Leva:
+✅ Acesso ao meu grupo VIP
+✅ Banca pra começar a apostar
 
-✅ Participar é grátis
-✅ Leva 2 minutos
-✅ Registra o bilhete aqui no WhatsApp
-
-⏰ Fecha sábado 16h, antes de Atlético-MG x Chapecoense.
+Grátis, sem depósito. Leva 30 segundos.
 
 👉 https://quiz.mateuscaumo.com.br
 
-## 2. Lembrete (sábado 19/09, ~12h)
+Cravou, registra o bilhete aqui no WhatsApp que eu libero.
 
-⏰ Últimas 4 horas pro bolão do Brasileirão
+## 2. Lembrete (meio da semana)
 
-10 palpites nos jogos de hoje, R$ 500 no Pix pra quem cravar tudo. Grátis.
+⏰ A máquina ainda tá aberta
 
-Fecha às 16h, quando a bola rolar no Atlético-MG x Chapecoense.
+Quem não puxou a alavanca ainda: três setes = VIP + banca. Grátis.
+
+Fecha domingo à noite.
 
 👉 https://quiz.mateuscaumo.com.br
 
-## 3. Resposta automática ao receber o bilhete
+## 3. Último aviso (domingo)
+
+🎰 Últimas horas do jackpot
+
+Fecha hoje às 23h59. Puxa a alavanca, crava os setes e registra o bilhete aqui.
+
+👉 https://quiz.mateuscaumo.com.br
+
+## 4. Resposta automática ao receber o bilhete
 
 Bilhete registrado ✅
 
-Guarda o número que veio na mensagem. Conferimos tudo depois de São Paulo x Inter (sábado 21h) e avisamos aqui quem cravou os 10.
-
-Boa sorte 🍀
+Guarda o número que veio na mensagem. Em instantes eu te passo o acesso ao VIP e libero a sua banca.

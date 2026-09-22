@@ -1,6 +1,29 @@
-# Bolão do Caumo — palpites da rodada, R$ 500 pra quem cravar
+# Jackpot do Caumo — máquina caça-níquel, VIP + banca pra quem cravar
 
-Página mobile-first: landing (hero, oferta, como funciona, aviso) → palpites, dois por jogo da rodada → bilhete com número → botão fixo que abre o WhatsApp com o número do bilhete pra registrar. Rodada atual: Brasileirão 2026, 28ª rodada, jogos de sábado 19/09 (10 palpites). A versão da Libertadores está na tag `liberta-quartas-2026`.
+Página mobile-first com dois modos, escolhidos por `modo` no [`app/config.js`](app/config.js):
+
+- **`jackpot`** (ativo): máquina caça-níquel na primeira tela → puxa a alavanca → três setes → bilhete do prêmio (acesso ao VIP + banca) → botão fixo que abre o WhatsApp com o número do bilhete pra resgatar.
+- **`bolao`**: landing (hero, oferta, como funciona, aviso) → palpites, dois por jogo da rodada → bilhete com número → registro no WhatsApp. Última rodada: Brasileirão 2026, 28ª rodada, sábado 19/09 (10 palpites). A versão da Libertadores está na tag `liberta-quartas-2026`.
+
+## Modo jackpot
+
+Tudo fica na seção `jackpot` no fim do `config.js`. Ela sobrescreve `seo`, `marquee`, `oferta`, `rodada`, `bilhete` e `aviso` do bolão, e adiciona `maquina`:
+
+| Campo | O que é |
+| --- | --- |
+| `maquina.simbolos` | Símbolos dos rolos. O primeiro é o do jackpot (três dele na linha do meio = cravou). |
+| `maquina.giroVencedor` | `1` crava de primeira. `2` faz o primeiro giro parar em "quase" (dois setes) e o segundo cravar. |
+| `maquina.letreiro` / `letreiroGanhou` | Texto do letreiro em cima da máquina, antes e depois de cravar. |
+| `maquina.titulo`, `subtitulo`, `ctaLabel`, `ctaHint`, `comoFunciona` | Copy da tela da máquina. |
+| `bilhete.premio` | Linhas do bilhete do prêmio (`item` / `valor`). `premioNome` é o que vai gravado no Supabase. |
+| `rodada.id` | Vai em todo evento (GA4 e Supabase). Troque a cada ação nova pra separar no `/admin`. |
+| `rodada.encerramento`, `fechaLabel`, `encerradoLabel` | Contador no rodapé fixo. |
+
+A máquina sempre para no resultado definido pelo `giroVencedor`: não existe sorteio, todo mundo que puxa crava.
+
+Eventos: `cta_start` (primeira puxada), `giro` (puxadas seguintes), `quase`, `jackpot`, `bilhete_view`, `whatsapp_click`. O bilhete é salvo na mesma tabela `bilhetes`, com o prêmio e o número de giros no campo `palpites`, então o `/admin` funciona sem mudar o banco.
+
+## Modo bolão
 
 Não tem resposta certa na hora. O afiliado recebe o bilhete no WhatsApp, confere depois do jogo e paga o prêmio conforme a faixa de acertos.
 

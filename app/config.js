@@ -1,9 +1,13 @@
 // ============================================================
-//  CONFIG DO BOLÃO — troque só o que está aqui
-//  Contexto atual: Brasileirão 2026, 28ª rodada, jogos de sábado 19/09
+//  CONFIG — troque só o que está aqui
+//
+//  modo: "jackpot"  → máquina caça-níquel (Jackpot do Caumo). Copy e regras na seção `jackpot` lá embaixo.
+//  modo: "bolao"    → bolão de palpites (Brasileirão 2026, 28ª rodada). Tudo abaixo continua valendo.
 // ============================================================
 
-export const config = {
+const base = {
+  modo: "jackpot",
+
   // >>> WhatsApp que recebe o bilhete (só dígitos, com DDI+DDD) <<<
   // Ex: "5511999999999"
   whatsappNumero: "559180194075",
@@ -182,3 +186,92 @@ export const config = {
     ],
   },
 };
+
+// ============================================================
+//  JACKPOT DO CAUMO — só vale quando base.modo === "jackpot"
+//  Sobrescreve seo, marquee, oferta, rodada, bilhete e aviso.
+//  Prêmio de quem crava: acesso ao VIP + banca. O resgate é no WhatsApp.
+// ============================================================
+const jackpot = {
+  whatsappMensagem: "Cravei o jackpot! Quero resgatar meu prêmio #{codigo}",
+
+  seo: {
+    titulo: "Jackpot do Caumo — puxa a alavanca e leva VIP + banca",
+    descricao: "Puxa a alavanca da máquina do Caumo. Cravou o jackpot, ganha acesso ao VIP e uma banca pra começar. Grátis.",
+  },
+
+  oferta: {
+    valor: "VIP + Banca",
+    regra: "pra quem cravar o jackpot",
+  },
+
+  // id vai em todo evento (GA4 e Supabase) pra separar essa ação das rodadas do bolão
+  rodada: {
+    id: "jackpot-s39",
+    nome: "Jackpot do Caumo",
+    // Encerramento (ISO com fuso). "" desliga o contador.
+    encerramento: "2026-09-27T23:59:00-03:00",
+    fechaLabel: "Máquina fecha em",
+    encerradoLabel: "Máquina fechada",
+    jogos: [],
+  },
+  palpites: [],
+
+  marquee: ["Jackpot do Caumo", "Puxa a alavanca", "Acesso ao VIP", "Banca liberada", "Grátis", "Resgate no WhatsApp"],
+
+  maquina: {
+    // Letreiro em cima da máquina (antes / depois de cravar)
+    letreiro: "Jackpot",
+    letreiroGanhou: "Jackpot!",
+    label: "Jackpot do Caumo",
+    titulo: "Puxa a alavanca e *crava o jackpot*",
+    subtitulo: "Três setes na linha liberam acesso ao VIP do Caumo e uma banca pra começar. Grátis, sem depósito.",
+    ctaLabel: "Puxar a alavanca",
+    ctaGirando: "Girando",
+    ctaQuase: "Puxar de novo",
+    ctaHint: "Grátis. Um giro e o prêmio já sai.",
+    quaseTitulo: "Quase! Faltou um sete",
+    quaseSub: "Você ainda tem um giro. Puxa de novo.",
+    ganhouTitulo: "Cravou o jackpot",
+    ganhouSub: "Fechando seu bilhete do prêmio",
+    // Símbolos dos rolos. O primeiro é o do jackpot.
+    simbolos: ["7", "BAR", "★", "$", "◆"],
+    // Em qual giro a máquina crava: 1 = ganha de primeira; 2 = o primeiro giro para em "quase" (dois setes) e o segundo crava.
+    giroVencedor: 1,
+    comoFunciona: [
+      "Puxa a alavanca da máquina",
+      "Cravou os três setes, registra o prêmio no WhatsApp",
+      "Recebe o acesso ao VIP e a banca",
+    ],
+  },
+
+  bilhete: {
+    slipTitulo: "Jackpot do Caumo",
+    label: "Seu prêmio",
+    titulo: "Registra no WhatsApp pra resgatar",
+    subtitulo: "Sem registro o prêmio não é liberado. Aperta o botão que a mensagem já vai com o número do seu bilhete.",
+    ctaLabel: "Resgatar no WhatsApp",
+    ctaHint: "Abre o WhatsApp com o número do seu prêmio",
+    refazerLabel: "Voltar pra máquina",
+    // Linhas do bilhete de prêmio
+    premio: [
+      { item: "Acesso ao VIP", valor: "Liberado" },
+      { item: "Banca", valor: "Liberada" },
+    ],
+    premioNome: "Acesso ao VIP + Banca",
+    rodapeEsq: "Resgate",
+    rodapeDir: "Pelo WhatsApp",
+  },
+
+  aviso: {
+    titulo: "Aviso importante",
+    linhas: [
+      "Ação gratuita, sem depósito. O prêmio só é liberado pra quem registrar o bilhete no WhatsApp.",
+      "Um prêmio por pessoa. Bilhetes duplicados são desconsiderados.",
+      "Apostas esportivas envolvem risco financeiro. Nunca aposte mais do que pode perder.",
+      "Conteúdo destinado a maiores de 18 anos. Jogue com responsabilidade.",
+    ],
+  },
+};
+
+export const config = base.modo === "jackpot" ? { ...base, ...jackpot } : base;
